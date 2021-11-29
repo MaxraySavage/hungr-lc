@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-large">
+    <figure class="image is-64x64">
+        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+    </figure>
+    <h1 class="title" th:text="${recipe.getName()}">Recipe Title</h1>
+    <p class="subtitle" th:text="${recipe.getShortDescription()}">
+        Recipe description
+    </p>
+</section>
+
+</body>
+</html>
