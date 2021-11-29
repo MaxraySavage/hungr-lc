@@ -10,11 +10,11 @@ public class RecipesController {
 
     @GetMapping
     public String getHome(){
-        return "recipes/index";
+        return "recipes/index-mock";
     }
 
     @GetMapping("create")
     public String renderCreateRecipeForm(){
-        return "recipes/create";
+        return "recipes/create-mock";
     }
 }
