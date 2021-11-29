@@ -7,12 +7,12 @@ import javax.validation.constraints.Size;
 @Entity
 public class Recipe extends AbstractEntity{
 
-    @NotBlank(message="Recipe name must not be blank.")
-    @Size(min=1, max=100, message="Recipe name must be less than 100 characters")
+    @NotBlank(message="Name must not be blank.")
+    @Size(max=100, message="Name must be less than 100 characters")
     private String name;
 
-    @NotBlank
-    @Size(min=1, max=480, message="Recipe description must be less than 480 characters")
+    @NotBlank(message="Description must not be blank")
+    @Size(max=480, message="Description must be less than 480 characters")
     private String shortDescription;
 
     public Recipe() {}

@@ -18,15 +18,30 @@
         <div class="field">
             <label class="label">Recipe Name</label>
             <div class="control">
-                <input th:field="${recipe.name}" class="input" type="text" placeholder="What's cooking?">
+                <input
+                        th:field="${recipe.name}"
+                        class="input"
+                        th:errorclass="is-danger"
+                        type="text"
+                        placeholder="What's cooking?"
+                >
             </div>
+            <p class="help is-danger" th:errors="${recipe.name}"></p>
         </div>
 
         <div class="field">
             <label class="label">Short Description</label>
             <div class="control">
-                <textarea th:field="${recipe.shortDescription}" class="textarea" placeholder="A short description of this meal!"></textarea>
+                <textarea
+                        th:field="${recipe.shortDescription}"
+                        class="textarea"
+                        th:errorclass="is-danger"
+                        placeholder="A short description of this meal!"
+                >
+
+                </textarea>
             </div>
+            <p class="help is-danger" th:errors="${recipe.shortDescription}"></p>
         </div>
 
         <div class="field is-grouped">
