@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("recipes")
@@ -21,8 +22,10 @@ public class RecipesController {
     private RecipeRepository recipeRepository;
 
     @GetMapping
-    public String getHome(){
-        return "recipes/index-mock";
+    public String displayRecipes(Model model){
+        model.addAttribute("title", "All Recipes");
+        model.addAttribute("recipes", recipeRepository.findAll());
+        return "recipes/index";
     }
 
     @GetMapping("create")

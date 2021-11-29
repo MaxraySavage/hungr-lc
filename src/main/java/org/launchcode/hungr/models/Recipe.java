@@ -12,7 +12,7 @@ public class Recipe extends AbstractEntity{
     private String name;
 
     @NotBlank(message="Description must not be blank")
-    @Size(max=480, message="Description must be less than 480 characters")
+    @Size(max=240, message="Description must be less than 240 characters")
     private String shortDescription;
 
     public Recipe() {}
