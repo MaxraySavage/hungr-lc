@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-small">
+    <h1 class="title">Share a Recipe</h1>
+    <h2 class="subtitle">
+        Yum yum yum
+    </h2>
+</section>
+
+
+<div class="container box">
+    <div class="field">
+        <label class="label">Recipe Title</label>
+        <div class="control">
+            <input class="input" type="text" placeholder="What're you making?">
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+            <textarea class="textarea" placeholder="A short description of this meal!"></textarea>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="field column is-narrow">
+            <label class="label">Estimated Prep Time</label>
+            <div class="control has-icons-right">
+                <input class="input is-success" type="text" placeholder="Text input" value="12">
+                <span class="icon is-small is-right">
+                    <i class="far fa-clock"></i>
+                </span>
+            </div>
+            <p class="help is-success">This username is available</p>
+        </div>
+
+        <div class="field column">
+            <label class="label">Units</label>
+            <div class="control">
+                <div class="select">
+                    <select>
+                        <option>Hours</option>
+                        <option>Minutes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <article class="panel is-warning">
+        <p class="panel-heading">
+            Ingredients
+        </p>
+        <div class="panel-block">
+            <p class="control has-icons-right">
+                <input class="input is-warning" type="text" placeholder="Add an Ingredient">
+                    <span class="icon is-right">
+                        <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                    </span>
+            </p>
+        </div>
+        <a class="panel-block is-active">
+            <span class="panel-icon">
+                <i class="fas fa-times-circle" aria-hidden="true"></i>
+            </span>
+            2 eggs
+        </a>
+        <a class="panel-block">
+            <span class="panel-icon">
+                <i class="fas fa-times-circle" aria-hidden="true"></i>
+            </span>
+            Flour
+        </a>
+        <a class="panel-block">
+            <span class="panel-icon">
+                <i class="fas fa-times-circle" aria-hidden="true"></i>
+            </span>
+            Butter
+        </a>
+    </article>
+
+    <div class="field">
+        <label class="label">Type of meal</label>
+        <div class="control">
+            <div class="select">
+                <select>
+                    <option>Breakfast</option>
+                    <option>Lunch</option>
+                    <option>Dinner</option>
+                    <option>Side</option>
+                    <option>Snack</option>
+                    <option>Dessert</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Main Recipe</label>
+        <div class="control">
+            <textarea class="textarea" placeholder="Tell us how it's done!"></textarea>
+        </div>
+    </div>
+
+
+    <div class="field">
+        <div class="control">
+            <label class="checkbox">
+                <input type="checkbox">
+                I agree to the <a href="#">terms and conditions</a>
+            </label>
+        </div>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+            <button class="button is-link is-light">Cancel</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-large">
+    <h1 class="title">All Recipes</h1>
+    <h2 class="subtitle">
+        A list of all public recipes currently in the database.
+    </h2>
+</section>
+
+<div class="box level">
+    <div class="level-left">
+        <div class="level-item">
+            Recipe Image
+        </div>
+        <div class="level-item">
+            Recipe name
+        </div>
+        <div class="level-item">
+            recipe rating
+        </div>
+    </div>
+    <div class="level-right">
+        <div class="level-item">
+            Recipe Prep time
+        </div>
+        <div class="level-item">
+            Recipe tags
+        </div>
+    </div>
+</div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+</body>
+</html>
