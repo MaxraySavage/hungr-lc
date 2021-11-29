@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-large">
+    <h1 class="title">All Recipes</h1>
+    <h2 class="subtitle">
+        A list of all public recipes currently in the database.
+    </h2>
+</section>
+
+<th:block th:each="recipe : ${recipes}">
+    <div class="box">
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-64x64">
+                    <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                </figure>
+            </div>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong th:text="${recipe.getName()}">Recipe Name</strong>
+                        <br>
+                        <span th:text="${recipe.getShortDescription()}"></span>
+                    </p>
+                </div>
+            </div>
+        </article>
+    </div>
+</th:block>
+</body>
+</html>
