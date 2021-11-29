@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -26,6 +23,19 @@ public class RecipesController {
         model.addAttribute("title", "All Recipes");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "recipes/index";
+    }
+
+    @GetMapping("/details/{recipeId}")
+    public String displayRecipe(Model model, @PathVariable int recipeId){
+        Optional<Recipe> optionRecipe = recipeRepository.findById(recipeId);
+        if(optionRecipe.isEmpty()){
+            // TODO: Add a `recipe not found` page
+            return "redirect:/recipes";
+        }
+        Recipe recipe = optionRecipe.get();
+        model.addAttribute("title", "Recipe Details");
+        model.addAttribute("recipe", recipe);
+        return "recipes/details";
     }
 
     @GetMapping("create")
