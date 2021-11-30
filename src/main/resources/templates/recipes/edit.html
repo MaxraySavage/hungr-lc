@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-small">
+    <h1 class="title">Edit Recipe</h1>
+</section>
+
+
+<div class="container box">
+    <form method="post">
+        <div class="field">
+            <label class="label">Recipe Name</label>
+            <div class="control">
+                <input
+                        th:field="${recipe.name}"
+                        class="input"
+                        th:errorclass="is-danger"
+                        type="text"
+                >
+            </div>
+            <p class="help is-danger" th:errors="${recipe.name}"></p>
+        </div>
+
+        <div class="field">
+            <label class="label">Short Description</label>
+            <div class="control">
+                <textarea
+                        th:field="${recipe.shortDescription}"
+                        class="textarea"
+                        th:errorclass="is-danger"
+                >
+
+                </textarea>
+            </div>
+            <p class="help is-danger" th:errors="${recipe.shortDescription}"></p>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-link">Save</button>
+                <a class="button" th:href="@{/recipes/details/} + ${recipe.getId()}">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

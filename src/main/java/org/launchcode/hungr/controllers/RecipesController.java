@@ -53,4 +53,33 @@ public class RecipesController {
         recipeRepository.save(newRecipe);
         return "redirect:";
     }
+
+    @GetMapping("/edit/{recipeId}")
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId){
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        if(optionalRecipe.isEmpty()) {
+            return "redirect:";
+        }
+        Recipe recipe = optionalRecipe.get();
+        model.addAttribute("title", "Edit Recipe");
+        model.addAttribute("recipe", recipe);
+
+        return "recipes/edit";
+    }
+
+    @PostMapping("/edit/{recipeId}")
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid Recipe updatedRecipe, Errors errors){
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        if(optionalRecipe.isEmpty()) {
+            return "redirect:";
+        }
+        Recipe recipe = optionalRecipe.get();
+        if(errors.hasErrors()){
+            model.addAttribute("title", "Edit Recipe");
+            model.addAttribute("recipe", updatedRecipe);
+            return "recipes/edit";
+        }
+        recipeRepository.save(updatedRecipe);
+        return "redirect:recipes/details/" + recipeId;
+    }
 }
