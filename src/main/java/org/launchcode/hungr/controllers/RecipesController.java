@@ -82,4 +82,13 @@ public class RecipesController {
         recipeRepository.save(updatedRecipe);
         return "redirect:recipes/details/" + recipeId;
     }
+
+    @PostMapping("delete")
+    public String processDeleteRecipe(@RequestParam(required = false) Integer recipeId){
+        if(recipeId == null){
+            return "redirect:";
+        }
+        recipeRepository.deleteById(recipeId);
+        return "redirect:";
+    }
 }
