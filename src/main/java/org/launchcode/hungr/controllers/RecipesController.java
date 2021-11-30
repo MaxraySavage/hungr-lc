@@ -50,15 +50,15 @@ public class RecipesController {
         if(errors.hasErrors()){
             return "recipes/create";
         }
-        recipeRepository.save(newRecipe);
-        return "redirect:";
+        Recipe savedRecipe = recipeRepository.save(newRecipe);
+        return "redirect:/recipes/details/" + savedRecipe.getId();
     }
 
     @GetMapping("/edit/{recipeId}")
     public String renderEditRecipeForm(Model model, @PathVariable int recipeId){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
-            return "redirect:";
+            return "redirect:/recipes";
         }
         Recipe recipe = optionalRecipe.get();
         model.addAttribute("title", "Edit Recipe");
@@ -68,27 +68,30 @@ public class RecipesController {
     }
 
     @PostMapping("/edit/{recipeId}")
-    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid Recipe updatedRecipe, Errors errors){
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid Recipe editedRecipe, Errors errors){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
-            return "redirect:";
+            return "redirect:/recipes";
         }
-        Recipe recipe = optionalRecipe.get();
         if(errors.hasErrors()){
             model.addAttribute("title", "Edit Recipe");
-            model.addAttribute("recipe", updatedRecipe);
+            model.addAttribute("recipe", editedRecipe);
             return "recipes/edit";
         }
-        recipeRepository.save(updatedRecipe);
-        return "redirect:recipes/details/" + recipeId;
+        System.out.println(editedRecipe.getId());
+        Recipe originalRecipe = optionalRecipe.get();
+        originalRecipe.setName(editedRecipe.getName());
+        originalRecipe.setShortDescription(editedRecipe.getShortDescription());
+        recipeRepository.save(originalRecipe);
+        return "redirect:/recipes/details/" + originalRecipe.getId();
     }
 
     @PostMapping("delete")
     public String processDeleteRecipe(@RequestParam(required = false) Integer recipeId){
         if(recipeId == null){
-            return "redirect:";
+            return "redirect:/recipes";
         }
         recipeRepository.deleteById(recipeId);
-        return "redirect:";
+        return "redirect:/recipes";
     }
 }
