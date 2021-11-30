@@ -12,6 +12,7 @@
 
 <div class="container box">
     <form method="post">
+        <input type="hidden" th:field="${recipe.id}">
         <div class="field">
             <label class="label">Recipe Name</label>
             <div class="control">
@@ -41,7 +42,7 @@
 
         <div class="field is-grouped">
             <div class="control">
-                <button class="button is-link">Save</button>
+                <input type="submit" class="button is-link" value="Save"></input>
                 <a class="button" th:href="@{/recipes/details/} + ${recipe.getId()}">Cancel</a>
             </div>
         </div>
