@@ -6,11 +6,20 @@
 
 
 <section class="section is-large">
+
     <h1 class="title">All Recipes</h1>
     <h2 class="subtitle">
         A list of all public recipes currently in the database.
     </h2>
+    <a class="button is-primary" th:href="@{/recipes/create}">Add your own</a>
+
 </section>
+<div class="box" th:unless="${recipes} and ${recipes.size()}">
+    <h1 class="title is-4">No Recipes</h1>
+    <h2 class="subtitle is-6">
+        We couldn't find any recipes in the database. Maybe you could add one for us?
+    </h2>
+</div>
 <div class="container is-fluid">
     <th:block th:each="recipe : ${recipes}">
         <a th:href="@{/recipes/details/} + ${recipe.getId()}" class="box">
