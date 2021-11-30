@@ -8,7 +8,8 @@ Create a way for people to easily save, share and try out new recipes without ha
 ## Progress
 - [x] Brainstorm and build mock frontend
 - [x] Build minimum viable product
-- [ ] Choose and complete first refinement
+- [x] Choose and complete first refinement (I chose to add ingredients)
+- [ ] Implement ingredients
 
 ### Brainstorm front end
 Spending some time thinking about how I want things to work eventually will help me to get my database design done well the first time.
@@ -59,11 +60,6 @@ This app becomes much more useful and fun once users are implemented.
 A user should at least have a user name and a password hash. An email address would alos be good even if we aren't using email now.
 
 Once user authentication is implemented we'll have to thin about what parts of the site are usable without authentication and how we should structure navigation.
-
-### Road map
-First step will be a minimum viable product.
-From there I think including recipe steps will add the most value. After that, who knows!
-
 
 #### Credits
 fork icon from Freepik www.flaticon.com
