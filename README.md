@@ -5,7 +5,10 @@ Deployed on Heroku [https://hungr-dev.herokuapp.com/](https://hungr-dev.herokuap
 ## Goals
 Create a way for people to easily save, share and try out new recipes without having to read a novel and fight through a bunch of popup advertisements.
 
-## Roadmap
+## Progress
+- [x] Brainstorm and build mock frontend
+- [x] Build minimum viable product
+- [ ] Choose and complete first refinement
 
 ### Brainstorm front end
 Spending some time thinking about how I want things to work eventually will help me to get my database design done well the first time.
@@ -16,7 +19,7 @@ In order to get this done quickly, we can create a simplified recipe object that
 Then we can build the controller, data repository and thymeleaf templates to make that happen.
 
 ### Refinements
-A recipe is obviously more than just a name and a description.
+A recipe is more than just a name and a description.
 
 #### Steps
 Recipes are broken up into steps.
