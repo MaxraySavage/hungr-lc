@@ -1,6 +1,7 @@
 # hungr recipe app
 A web application built with Spring MVC, thymeleaf, Bulma, hibernate, and MySQL.
 
+Deployed on Heroku [https://hungr-dev.herokuapp.com/](https://hungr-dev.herokuapp.com/)
 ## Goals
 Create a way for people to easily save, share and try out new recipes without having to read a novel and fight through a bunch of popup advertisements.
 

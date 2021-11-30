@@ -20,7 +20,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'mysql:mysql-connector-java'
-	implementation 'com.github.jsimone:webapp-runner:8.5.11.3'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -29,17 +28,3 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
-
-task stage() {
-	dependsOn clean, war
-}
-war.mustRunAfter clean
-
-task copyToLib(type: Copy) {
-	into "$buildDir/server"
-	from(configurations.implementation) {
-		include "webapp-runner*"
-	}
-}
-
-stage.dependsOn(copyToLib)
