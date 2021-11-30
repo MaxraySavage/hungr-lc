@@ -14,6 +14,14 @@
         Recipe description
     </p>
 </section>
-<a class="button" th:href="@{/recipes/edit/} + ${recipe.getId()}">Edit</a>
+<section class="section">
+    <div class="buttons">
+        <a class="button" th:href="@{/recipes/edit/} + ${recipe.getId()}">Edit</a>
+        <form th:action="@{/recipes/delete}" method="post">
+            <input type="hidden" name="recipeId" th:value="${recipe.getId()}" />
+            <input class="button is-danger" type="submit" value="Delete">
+        </form>
+    </div>
+</section>
 </body>
 </html>
