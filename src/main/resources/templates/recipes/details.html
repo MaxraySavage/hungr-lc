@@ -4,24 +4,56 @@
 <body>
 <nav th:replace="fragments :: navbar"></nav>
 
+<div class="container">
+<section class="section">
+    <div class="box">
+        <div class="columns">
+            <div class="column is-narrow">
+                <figure class="image is-128x128">
+                    <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                </figure>
+            </div>
+            <div class="column">
+                <h1 class="title" th:text="${recipe.getName()}">Recipe Title</h1>
+                <p class="subtitle" th:text="${recipe.getShortDescription()}">
+                    Recipe description
+                </p>
+            </div>
+        </div>
 
-<section class="section is-large">
-    <figure class="image is-64x64">
-        <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
-    </figure>
-    <h1 class="title" th:text="${recipe.getName()}">Recipe Title</h1>
-    <p class="subtitle" th:text="${recipe.getShortDescription()}">
-        Recipe description
-    </p>
+    </div>
+
+<section class="container">
+    <div class="panel is-info">
+        <h2 class="panel-heading">
+            Ingredients
+        </h2>
+        <div class="columns is-multiline is-gapless">
+            <th:block th:each="ingredient: ${recipe.ingredients}">
+                <div class="column is-half">
+                    <a class="panel-block">
+                        <label class="panel-block">
+                            <input type="checkbox">
+                            <span th:text="${ingredient.name}"></span>
+                        </label>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+    </div>
+
 </section>
+</section>
+
 <section class="section">
     <div class="buttons">
         <a class="button" th:href="@{/recipes/edit/} + ${recipe.getId()}">Edit</a>
         <form th:action="@{/recipes/delete}" method="post">
-            <input type="hidden" name="recipeId" th:value="${recipe.getId()}" />
+            <input type="hidden" name="recipeId" th:value="${recipe.getId()}"/>
             <input class="button is-danger" type="submit" value="Delete">
         </form>
     </div>
 </section>
+</div>
 </body>
 </html>

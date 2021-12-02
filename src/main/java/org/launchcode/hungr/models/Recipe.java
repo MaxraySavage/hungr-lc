@@ -1,8 +1,12 @@
 package org.launchcode.hungr.models;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Recipe extends AbstractEntity{
@@ -14,6 +18,14 @@ public class Recipe extends AbstractEntity{
     @NotBlank(message="Description must not be blank")
     @Size(max=240, message="Description must be less than 240 characters")
     private String shortDescription;
+
+    @OneToMany
+    @JoinColumn(name = "recipe_id")
+    private final List<Ingredient> ingredients = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "recipe_id")
+    private final List<RecipeStep> steps = new ArrayList<>();
 
     public Recipe() {}
 
@@ -36,5 +48,13 @@ public class Recipe extends AbstractEntity{
 
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public List<RecipeStep> getSteps() {
+        return steps;
     }
 }

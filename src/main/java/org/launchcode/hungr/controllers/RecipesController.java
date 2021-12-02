@@ -1,6 +1,8 @@
 package org.launchcode.hungr.controllers;
 
+import org.launchcode.hungr.data.IngredientRepository;
 import org.launchcode.hungr.data.RecipeRepository;
+import org.launchcode.hungr.models.Ingredient;
 import org.launchcode.hungr.models.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -17,6 +20,9 @@ public class RecipesController {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @GetMapping
     public String displayRecipes(Model model){
@@ -46,11 +52,22 @@ public class RecipesController {
     }
 
     @PostMapping("create")
-    public String processCreateRecipeForm(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model){
-        if(errors.hasErrors()){
+    public String processCreateRecipeForm(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model, @RequestParam(required = false) List<String> ingredients){
+
+        if(errors.hasErrors() || ingredients == null){
+            if(ingredients == null) {
+                model.addAttribute("ingredientsError", "Recipe must have ingredients");
+            }else {
+                model.addAttribute("ingredients", ingredients);
+            }
             return "recipes/create";
         }
         Recipe savedRecipe = recipeRepository.save(newRecipe);
+        for( String ingredientName : ingredients) {
+            Ingredient newIngredient = new Ingredient(ingredientName);
+            newIngredient.setRecipe(savedRecipe);
+            ingredientRepository.save(newIngredient);
+        }
         return "redirect:/recipes/details/" + savedRecipe.getId();
     }
 
