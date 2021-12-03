@@ -69,13 +69,11 @@
             <div class="columns is-multiline is-gapless" id="ingredient-input-display">
                 <th:block th:each="ingredient: ${ingredients}">
                     <div class="column is-half panel-column">
-                        <a class="panel-block">
                             <label class="panel-block">
                                 <button class="delete panel-block-delete"></button>
                                 <input class="is-hidden" type="checkbox" name="ingredients" th:value="${ingredient}" checked>
                                 <span th:text="${ingredient}"></span>
                             </label>
-                        </a>
                     </div>
                 </th:block>
             </div>

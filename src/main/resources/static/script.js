@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <span class="panel-icon panel-block-delete">
                                        <i class="fas fa-times-circle" aria-hidden="true"></i>
                                      </span>
-
                                      <input class="is-hidden" type="checkbox" name="${$source.dataset.name}" value="${$source.value}" checked>
                                      <span>${$source.value}</span>
                              </label>

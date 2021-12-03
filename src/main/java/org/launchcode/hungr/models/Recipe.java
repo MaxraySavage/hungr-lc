@@ -1,5 +1,8 @@
 package org.launchcode.hungr.models;
 
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -19,7 +22,7 @@ public class Recipe extends AbstractEntity{
     @Size(max=240, message="Description must be less than 240 characters")
     private String shortDescription;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private final List<Ingredient> ingredients = new ArrayList<>();
 
