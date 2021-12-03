@@ -108,7 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const newHTML = `<article class="media recipe-step">
                                          <div class="media-left">
                                             <div class="control">
-                                                <label class="label">${$recipeSteps.length + 1}.</label>
+                                                <div class="block">
+                                                    <span class="tag">${$recipeSteps.length + 1}</span>
+                                                </div>
                                                 <button class="delete recipe-step-delete"></button>
                                             </div>
                                          </div>

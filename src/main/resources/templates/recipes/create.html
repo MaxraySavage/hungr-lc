@@ -51,14 +51,16 @@
             <div class="panel-block">
                 <div class="field has-addons is-panel-input-field">
                     <div class="control is-expanded has-icons-left">
-                        <input class="input is-warning is-panel-text-input" type="text" placeholder="Add an Ingredient" id="ingredient-text-input" data-name="ingredients">
+                        <input class="input is-warning is-panel-text-input" type="text" placeholder="Add an Ingredient"
+                               id="ingredient-text-input" data-name="ingredients">
                         <span class="icon is-left">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                         </span>
                         <p class="help is-danger" th:text="${ingredientsError} "></p>
                     </div>
                     <div class="control">
-                        <a class="button is-info is-panel-input-button" data-text-source="ingredient-text-input" data-text-display="ingredient-input-display">
+                        <a class="button is-info is-panel-input-button" data-text-source="ingredient-text-input"
+                           data-text-display="ingredient-input-display">
                             Add
                         </a>
                     </div>
@@ -67,11 +69,14 @@
             <div class="columns is-multiline is-gapless" id="ingredient-input-display">
                 <th:block th:each="ingredient: ${ingredients}">
                     <div class="column is-half panel-column">
-                            <label class="panel-block">
-                                <button class="delete panel-block-delete"></button>
-                                <input class="is-hidden" type="checkbox" name="ingredients" th:value="${ingredient}" checked>
-                                <span th:text="${ingredient}"></span>
-                            </label>
+                        <label class="panel-block">
+                            <span class="panel-icon panel-block-delete">
+                                <i class="fas fa-times-circle" aria-hidden="true"></i>
+                            </span>
+                            <input class="is-hidden" type="checkbox" name="ingredients" th:value="${ingredient}"
+                                   checked>
+                            <span th:text="${ingredient}"></span>
+                        </label>
                     </div>
                 </th:block>
             </div>
