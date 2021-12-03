@@ -37,9 +37,7 @@
                         class="textarea"
                         th:errorclass="is-danger"
                         placeholder="A short description of this meal!"
-                >
-
-                </textarea>
+                ></textarea>
             </div>
             <p class="help is-danger" th:errors="${recipe.shortDescription}"></p>
         </div>
@@ -79,40 +77,41 @@
             </div>
         </div>
 
-<!--        <div class="panel is-info">-->
-<!--            <h2 class="panel-heading">-->
-<!--                Steps-->
-<!--            </h2>-->
-<!--            <div class="panel-block">-->
-<!--                <div class="field has-addons is-panel-input-field">-->
-<!--                    <div class="control is-expanded has-icons-left">-->
-<!--                        <input class="input is-warning is-panel-text-input" type="text" placeholder="Add a Step" id="step-text-input" data-name="steps">-->
-<!--                        <span class="icon is-left">-->
-<!--                            <i class="fas fa-plus-circle" aria-hidden="true"></i>-->
-<!--                        </span>-->
-<!--                        <p class="help is-danger" th:text="${stepsError} "></p>-->
-<!--                    </div>-->
-<!--                    <div class="control">-->
-<!--                        <a class="button is-info is-panel-input-button" data-text-source="step-text-input" data-text-display="step-input-display">-->
-<!--                            Add-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="columns is-multiline is-gapless" id="step-input-display">-->
-<!--                <th:block th:each="step: ${steps}">-->
-<!--                    <div class="column is-half panel-column">-->
-<!--                        <a class="panel-block">-->
-<!--                            <label class="panel-block">-->
-<!--                                <button class="delete panel-block-delete"></button>-->
-<!--                                <input class="is-hidden" type="checkbox" name="steps" th:value="${step}" checked>-->
-<!--                                <span th:text="${step}"></span>-->
-<!--                            </label>-->
-<!--                        </a>-->
-<!--                    </div>-->
-<!--                </th:block>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="box">
+            <div class="block" id="recipe-step-container">
+            <h1 class="title is-4">Recipe Steps</h1>
+            <h2 class="subtitle is-6">Show us how it's done.</h2>
+            <article class="media recipe-step">
+                <div class="media-left">
+                    <div class="control">
+                        <label class="label">1.</label>
+                        <button class="delete recipe-step-delete"></button>
+                    </div>
+                </div>
+                <div class="media-content">
+                    <div class="field">
+                        <div class="control">
+                        <textarea
+                                class="textarea is-small step-input"
+                                name="steps"
+                        ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            </div>
+            <div class="block">
+                <div class="level" id="recipe-step-buttons">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <button class="button is-success" id="add-recipe-step-button">Add a Step</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
         <div class="field is-grouped">
             <div class="control">

@@ -2,8 +2,10 @@ package org.launchcode.hungr.controllers;
 
 import org.launchcode.hungr.data.IngredientRepository;
 import org.launchcode.hungr.data.RecipeRepository;
+import org.launchcode.hungr.data.RecipeStepRepository;
 import org.launchcode.hungr.models.Ingredient;
 import org.launchcode.hungr.models.Recipe;
+import org.launchcode.hungr.models.RecipeStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class RecipesController {
 
     @Autowired
     private IngredientRepository ingredientRepository;
+
+    @Autowired
+    private RecipeStepRepository recipeStepRepository;
 
     @GetMapping
     public String displayRecipes(Model model){
@@ -52,13 +57,18 @@ public class RecipesController {
     }
 
     @PostMapping("create")
-    public String processCreateRecipeForm(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model, @RequestParam(required = false) List<String> ingredients){
-
-        if(errors.hasErrors() || ingredients == null){
+    public String processCreateRecipeForm(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model, @RequestParam(required = false) List<String> ingredients, @RequestParam(required = false) List<String> steps){
+        System.out.println(steps);
+        if(errors.hasErrors() || ingredients == null || steps == null){
             if(ingredients == null) {
                 model.addAttribute("ingredientsError", "Recipe must have ingredients");
             }else {
                 model.addAttribute("ingredients", ingredients);
+            }
+            if(steps == null) {
+                model.addAttribute("stepsError", "Recipe must have steps");
+            }else {
+                model.addAttribute("steps", steps);
             }
             return "recipes/create";
         }
@@ -67,6 +77,11 @@ public class RecipesController {
             Ingredient newIngredient = new Ingredient(ingredientName);
             newIngredient.setRecipe(savedRecipe);
             ingredientRepository.save(newIngredient);
+        }
+        for( String stepText : steps) {
+            RecipeStep newStep = new RecipeStep(stepText);
+            newStep.setRecipe(savedRecipe);
+            recipeStepRepository.save(newStep);
         }
         return "redirect:/recipes/details/" + savedRecipe.getId();
     }

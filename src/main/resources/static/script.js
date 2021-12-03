@@ -1,12 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
   const parser = new DOMParser();
 
+  function detach(node) {
+    return node.parentElement.removeChild(node);
+  }
+
   const panelBlockDeleteHandler = (event) => {
       event.preventDefault();
       const $button = event.target;
       const $parentDiv = $button.closest('.panel-column');
       $parentDiv.remove();
   }
+
+  const recipeStepDeleteHandler = (event) => {
+        event.preventDefault();
+        let $recipeSteps = Array.from(document.querySelectorAll('.recipe-step'));
+        if($recipeSteps.length <= 1){
+            return
+        }
+        const $button = event.target;
+        const $parentDiv = $button.closest('.recipe-step');
+        $parentDiv.remove();
+        $recipeSteps = Array.from(document.querySelectorAll('.recipe-step'));
+        $recipeSteps.forEach( (el, index) => {
+            el.querySelector('.media-left').querySelector('label').innerText = `${index + 1}.`
+        })
+    }
 
   // Get all "navbar-burger" elements
   const $navbarBurgers = Array.from(document.querySelectorAll('.navbar-burger'));
@@ -66,12 +85,57 @@ document.addEventListener('DOMContentLoaded', () => {
         $displayDestination.appendChild(newNodes.body.firstChild);
 
         $source.value = '';
-
-
       })
     })
   }
 
+  const $addRecipeStepButton = document.getElementById('add-recipe-step-button');
+  const $deleteRecipeStepButtons = document.querySelectorAll('.recipe-step-delete');
+
+  if ($deleteRecipeStepButtons.length > 0) {
+    $deleteRecipeStepButtons.forEach( el => {
+        el.addEventListener('click', recipeStepDeleteHandler);
+    });
+  }
+
+  if($addRecipeStepButton) {
+    const $recipeStepContainer = document.getElementById('recipe-step-container');
+
+    $addRecipeStepButton.addEventListener('click', (e) => {
+        e.preventDefault()
+        const $recipeSteps = Array.from($recipeStepContainer.querySelectorAll('.recipe-step'));
+
+        const newHTML = `<article class="media recipe-step">
+                                         <div class="media-left">
+                                            <div class="control">
+                                                <label class="label">${$recipeSteps.length + 1}.</label>
+                                                <button class="delete recipe-step-delete"></button>
+                                            </div>
+                                         </div>
+                                         <div class="media-content">
+                                             <div class="field">
+                                                 <div class="control">
+                                                 <textarea
+                                                         class="textarea is-small step-input"
+                                                         name="steps"
+                                                 ></textarea>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </article>`;
+
+        const newNodes = parser.parseFromString(newHTML, 'text/html');
+
+        newNodes.querySelector('.recipe-step-delete').addEventListener('click', recipeStepDeleteHandler);
+
+
+        $recipeStepContainer.appendChild(newNodes.body.firstChild);
+
+
+    });
+
+
+  }
 
 
 
