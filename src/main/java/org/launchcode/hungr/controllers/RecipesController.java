@@ -58,7 +58,6 @@ public class RecipesController {
 
     @PostMapping("create")
     public String processCreateRecipeForm(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model, @RequestParam(required = false) List<String> ingredients, @RequestParam(required = false) List<String> steps){
-        System.out.println(steps);
         if(errors.hasErrors() || ingredients == null || steps == null){
             if(ingredients == null) {
                 model.addAttribute("ingredientsError", "Recipe must have ingredients");
@@ -100,12 +99,12 @@ public class RecipesController {
     }
 
     @PostMapping("/edit/{recipeId}")
-    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid Recipe editedRecipe, Errors errors, @RequestParam(required = false) List<String> ingredients){
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid Recipe editedRecipe, Errors errors, @RequestParam(required = false) List<String> ingredients, @RequestParam(required = false) List<String> steps){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
             return "redirect:/recipes";
         }
-        if(errors.hasErrors()  || ingredients == null || ingredients.size() == 0){
+        if(errors.hasErrors()  || ingredients == null || ingredients.size() == 0 || steps == null || steps.size() == 0){
             model.addAttribute("title", "Edit Recipe");
             model.addAttribute("recipe", editedRecipe);
             return "recipes/edit";
@@ -113,11 +112,19 @@ public class RecipesController {
         Recipe originalRecipe = optionalRecipe.get();
         originalRecipe.setName(editedRecipe.getName());
         originalRecipe.setShortDescription(editedRecipe.getShortDescription());
+
         originalRecipe.getIngredients().clear();
         for( String ingredientName : ingredients) {
             Ingredient newIngredient = new Ingredient(ingredientName);
             originalRecipe.getIngredients().add(newIngredient);
         }
+
+        originalRecipe.getSteps().clear();
+        for( String stepText : steps) {
+            RecipeStep newStep = new RecipeStep(stepText);
+            originalRecipe.getSteps().add(newStep);
+        }
+
         recipeRepository.save(originalRecipe);
         return "redirect:/recipes/details/" + originalRecipe.getId();
     }

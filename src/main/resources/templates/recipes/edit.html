@@ -77,6 +77,69 @@
             </div>
         </div>
 
+        <div class="box">
+            <div class="block" id="recipe-step-container">
+                <h1 class="title is-4">Recipe Steps</h1>
+
+                <th:block th:unless="${recipe.steps} and ${recipe.steps.size()}">
+                    <article class="media recipe-step">
+                        <div class="media-left">
+                            <div class="control">
+                                <div class="block">
+                                    <span class="tag">1</span>
+                                </div>
+                                <button class="delete recipe-step-delete"></button>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                            <div class="field">
+                                <div class="control">
+                        <textarea
+                                class="textarea is-small step-input"
+                                name="steps"
+                        ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </th:block>
+
+                <th:block th:each="step,iter : ${recipe.steps}">
+                    <article class="media recipe-step">
+                        <div class="media-left">
+                            <div class="control">
+                                <div class="block">
+                                    <span class="tag" th:text="${iter.index + 1}"></span>
+                                </div>
+                                <button class="delete recipe-step-delete"></button>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                            <div class="field">
+                                <div class="control">
+                        <textarea
+                                class="textarea is-small step-input"
+                                name="steps"
+                                th:text="${step.text}"
+                        ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </th:block>
+
+            </div>
+            <div class="block">
+                <div class="level" id="recipe-step-buttons">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <button class="button is-success" id="add-recipe-step-button">Add a Step</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="field is-grouped">
             <div class="control">
                 <input type="submit" class="button is-link" value="Save"></input>
