@@ -29,12 +29,10 @@
             <div class="columns is-multiline is-gapless">
                 <th:block th:each="ingredient: ${recipe.ingredients}">
                     <div class="column is-half">
-                        <a class="panel-block">
-                            <label class="panel-block">
-                                <input type="checkbox">
-                                <span th:text="${ingredient.name}"></span>
-                            </label>
-                        </a>
+                        <label class="panel-block">
+                            <input type="checkbox">
+                            <span th:text="${ingredient.name}"></span>
+                        </label>
                     </div>
                 </th:block>
             </div>
