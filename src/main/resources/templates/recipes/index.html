@@ -7,8 +7,8 @@
 
 <section class="section">
 
-    <h1 class="title">All Recipes</h1>
-    <h2 class="subtitle">
+    <h1 class="title" th:text="${title}">All Recipes</h1>
+    <h2 class="subtitle" th:text="${subtitle}">
         A list of all public recipes currently in the database.
     </h2>
     <a class="button is-primary" th:href="@{/recipes/create}">Add your own</a>
