@@ -26,7 +26,7 @@ public class Recipe extends AbstractEntity{
     @JoinColumn(name = "recipe_id")
     private final List<Ingredient> ingredients = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private final List<RecipeStep> steps = new ArrayList<>();
 

@@ -46,12 +46,20 @@
             <h2 class="panel-heading">
                 Instructions
             </h2>
-                <th:block th:each="step : ${recipe.steps}">
-                        <a class="panel-block">
+                <th:block th:each="step,iter : ${recipe.steps}">
                             <label class="panel-block">
-                                <span th:text="${step.text}"></span>
+                                <div class="level ">
+                                    <div class="level-left mr-3">
+                                        <div class="level-item">
+                                            <span class="tag" th:text="${iter.index+1}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="level-item">
+                                        <span th:text="${step.text}"></span>
+                                    </div>
+
+                                </div>
                             </label>
-                        </a>
                 </th:block>
         </div>
     </section>
