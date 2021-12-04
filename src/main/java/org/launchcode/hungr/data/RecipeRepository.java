@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
 
-    public List<Recipe> findByNameContainingIgnoreCase(String qString);
+    List<Recipe> findByNameContainingIgnoreCase(String qString);
 }
