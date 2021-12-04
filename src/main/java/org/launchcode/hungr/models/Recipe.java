@@ -2,10 +2,7 @@ package org.launchcode.hungr.models;
 
 import org.hibernate.annotations.Cascade;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -29,6 +26,9 @@ public class Recipe extends AbstractEntity{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private final List<RecipeStep> steps = new ArrayList<>();
+
+    @ManyToOne
+    private User author;
 
     public Recipe() {}
 
@@ -59,5 +59,13 @@ public class Recipe extends AbstractEntity{
 
     public List<RecipeStep> getSteps() {
         return steps;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }
