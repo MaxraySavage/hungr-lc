@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-small">
+    <h1 class="title" th:text="${title}">Sign Up</h1>
+    <h2 class="subtitle" th:text="${subtitle}">
+        Welcome!
+    </h2>
+</section>
+
+<div class="container">
+<form method="post">
+    <div class="box">
+    <div class="field">
+        <label class="label">Username</label>
+        <div class="control has-icons-left has-icons-right">
+            <input th:field="${loginFormDTO.username}" th:errorclass="is-danger" class="input" type="text">
+            <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+            </span>
+            <span class="icon is-small is-right is-hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+        </div>
+        <p class="help is-danger" th:errors="${loginFormDTO.username}"></p>
+    </div>
+
+    <div class="field">
+        <label class="label">Password</label>
+        <div class="control has-icons-left has-icons-right">
+            <input th:field="${loginFormDTO.password}" th:errorclass="is-danger" class="input" type="password">
+            <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+            </span>
+            <span class="icon is-small is-right is-hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+        </div>
+        <p class="help is-danger" th:errors="${loginFormDTO.password}"></p>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-link">
+                <strong>Log in</strong>
+            </button>
+        </div>
+        <div class="control">
+            <a th:href="@{/signup}" class="button is-link is-light">Sign up</a>
+        </div>
+    </div>
+    </div>
+
+</form>
+</div>
+</body>
+</html>
