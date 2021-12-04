@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section is-small">
+    <h1 class="title" th:text="${title}">Sign Up</h1>
+    <h2 class="subtitle" th:text="${subtitle}">
+        Welcome!
+    </h2>
+</section>
+
+<div class="container">
+<form method="post">
+    <div class="box">
+    <div class="field">
+        <label class="label">Username</label>
+        <div class="control has-icons-left has-icons-right">
+            <input th:field="${registerFormDTO.username}" th:errorclass="is-danger" class="input" type="text">
+            <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+            </span>
+            <span class="icon is-small is-right is-hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+        </div>
+        <p class="help is-danger" th:errors="${registerFormDTO.username}"></p>
+    </div>
+
+    <div class="field">
+        <label class="label">Password</label>
+        <div class="control has-icons-left has-icons-right">
+            <input th:field="${registerFormDTO.password}" th:errorclass="is-danger" class="input" type="password">
+            <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+            </span>
+            <span class="icon is-small is-right is-hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+        </div>
+        <p class="help is-danger" th:errors="${registerFormDTO.password}"></p>
+    </div>
+
+    <div class="field">
+        <label class="label">Verify Password</label>
+        <div class="control has-icons-left has-icons-right">
+            <input th:field="${registerFormDTO.verifyPassword}" th:errorclass="is-danger" class="input" type="password">
+            <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+            </span>
+            <span class="icon is-small is-right is-hidden" >
+                <i class="fas fa-exclamation-triangle"></i>
+            </span>
+        </div>
+        <p class="help is-danger" th:errors="${registerFormDTO.verifyPassword}"></p>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-link">Submit</button>
+        </div>
+        <div class="control">
+            <a th:href="@{/login}" class="button is-link is-light">Cancel</a>
+        </div>
+    </div>
+    </div>
+
+</form>
+</div>
+</body>
+</html>

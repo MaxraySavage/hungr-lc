@@ -6,12 +6,14 @@ import org.launchcode.hungr.data.RecipeStepRepository;
 import org.launchcode.hungr.models.Ingredient;
 import org.launchcode.hungr.models.Recipe;
 import org.launchcode.hungr.models.RecipeStep;
+import org.launchcode.hungr.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +30,15 @@ public class RecipesController {
 
     @Autowired
     private RecipeStepRepository recipeStepRepository;
+
+    @ModelAttribute
+    public void addUserAttributes(Model model, HttpServletRequest request) {
+        Object userObj = request.getAttribute("user");
+        if(userObj != null && userObj instanceof User){
+            model.addAttribute("user", (User) userObj);
+        }
+    }
+
 
     @GetMapping
     public String displayRecipes(Model model){
