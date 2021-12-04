@@ -61,7 +61,7 @@
             <div class="navbar-item">
                 <div class="buttons">
                     <th:block th:if="${user}">
-                        <a class="button is-primary">
+                        <a th:href="@{/profile}" class="button is-primary">
                             <strong th:text="${user.username} + '\'s Profile'">Sign up</strong>
                         </a>
                         <a th:href="@{/logout}" class="button is-light">
@@ -69,7 +69,7 @@
                         </a>
                     </th:block>
                     <th:block th:unless="${user}">
-                        <a class="button is-primary">
+                        <a th:href="@{/signup}" class="button is-primary">
                             <strong>Sign up</strong>
                         </a>
                         <a th:href="@{/login}" class="button is-light">
