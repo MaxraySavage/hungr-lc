@@ -43,6 +43,7 @@ public class RecipesController {
     @GetMapping
     public String displayRecipes(Model model){
         model.addAttribute("title", "All Recipes");
+        model.addAttribute("subtitle", "A list of all public recipes currently in the database.");
         model.addAttribute("recipes", recipeRepository.findAll());
         return "recipes/index";
     }
@@ -82,6 +83,8 @@ public class RecipesController {
             }
             return "recipes/create";
         }
+        // TODO: this next line needs work
+        newRecipe.setAuthor((User) model.getAttribute("user"));
         Recipe savedRecipe = recipeRepository.save(newRecipe);
         for( String ingredientName : ingredients) {
             Ingredient newIngredient = new Ingredient(ingredientName);

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head(hungr)"></head>
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+
+<section class="section">
+    <h1 class="title" th:text="${user.username}"></h1>
+    <h2 class="subtitle">
+        All your recipes in one place!
+    </h2>
+    <a class="button is-primary" th:href="@{/recipes/create}">Add a recipe</a>
+
+</section>
+<div class="box" th:unless="${user.ownedRecipes}">
+    <h1 class="title is-4">No Recipes</h1>
+    <h2 class="subtitle is-6">
+        We couldn't find any of your recipes in the database. Maybe you could add one for us?
+    </h2>
+</div>
+<div class="container is-fluid">
+    <th:block th:each="recipe : ${user.ownedRecipes}">
+        <a th:href="@{/recipes/details/} + ${recipe.getId()}" class="box">
+                <article class="media">
+                    <div class="media-left">
+                        <div class="block">
+                        <figure class="image is-64x64">
+                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+                        </figure>
+                        </div>
+                        <div class="block">
+                            by
+                            <span class="tag">
+                                <strong th:text="${recipe.author.username}"></strong>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong th:text="${recipe.getName()}">Recipe Name</strong>
+                                <br>
+                                <span th:text="${recipe.getShortDescription()}"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="media-right">
+
+                    </div>
+                </article>
+        </a>
+    </th:block>
+</div>
+</body>
+</html>

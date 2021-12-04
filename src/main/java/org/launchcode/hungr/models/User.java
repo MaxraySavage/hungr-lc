@@ -2,10 +2,7 @@ package org.launchcode.hungr.models;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +18,9 @@ public class User extends AbstractEntity{
     @NotNull
     private String pwHash;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    private List<Recipe> ownedRecipes = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch= FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    private final List<Recipe> ownedRecipes = new ArrayList<>();
 
     public User() {}
 
@@ -34,6 +31,10 @@ public class User extends AbstractEntity{
 
     public String getUsername() {
         return username;
+    }
+
+    public List<Recipe> getOwnedRecipes() {
+        return ownedRecipes;
     }
 
     public boolean isMatchingPassword(String password) {
