@@ -39,7 +39,6 @@ public class RecipesController {
         }
     }
 
-
     @GetMapping
     public String displayRecipes(Model model){
         model.addAttribute("title", "All Recipes");
@@ -126,20 +125,20 @@ public class RecipesController {
         Recipe originalRecipe = optionalRecipe.get();
         originalRecipe.setName(editedRecipe.getName());
         originalRecipe.setShortDescription(editedRecipe.getShortDescription());
-
         originalRecipe.getIngredients().clear();
+        originalRecipe.getSteps().clear();
+        Recipe savedRecipe = recipeRepository.save(originalRecipe);
         for( String ingredientName : ingredients) {
             Ingredient newIngredient = new Ingredient(ingredientName);
-            originalRecipe.getIngredients().add(newIngredient);
+            newIngredient.setRecipe(savedRecipe);
+            ingredientRepository.save(newIngredient);
         }
-
-        originalRecipe.getSteps().clear();
         for( String stepText : steps) {
             RecipeStep newStep = new RecipeStep(stepText);
-            originalRecipe.getSteps().add(newStep);
+            newStep.setRecipe(originalRecipe);
+            recipeStepRepository.save(newStep);
         }
 
-        recipeRepository.save(originalRecipe);
         return "redirect:/recipes/details/" + originalRecipe.getId();
     }
 

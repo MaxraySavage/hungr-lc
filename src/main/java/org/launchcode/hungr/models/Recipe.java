@@ -19,15 +19,15 @@ public class Recipe extends AbstractEntity{
     @Size(max=240, message="Description must be less than 240 characters")
     private String shortDescription;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private final List<Ingredient> ingredients = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private final List<RecipeStep> steps = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User author;
 
     public Recipe() {}

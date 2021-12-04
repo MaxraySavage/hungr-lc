@@ -18,7 +18,7 @@ public class User extends AbstractEntity{
     @NotNull
     private String pwHash;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch= FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, fetch= FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private final List<Recipe> ownedRecipes = new ArrayList<>();
 
