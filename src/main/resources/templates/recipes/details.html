@@ -62,7 +62,7 @@
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" th:if="${userIsAuthor}">
         <div class="buttons">
             <a class="button" th:href="@{/recipes/edit/} + ${recipe.getId()}">Edit</a>
             <form th:action="@{/recipes/delete}" method="post">
