@@ -22,6 +22,9 @@ public class User extends AbstractEntity{
     @JoinColumn(name = "author_id")
     private final List<Recipe> ownedRecipes = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private final List<Recipe> favoriteRecipes = new ArrayList<>();
+
     public User() {}
 
     public User(String username, String password) {
@@ -37,8 +40,22 @@ public class User extends AbstractEntity{
         return ownedRecipes;
     }
 
+    public List<Recipe> getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
     public boolean isMatchingPassword(String password) {
         return encoder.matches(password, pwHash);
     }
+
+
+    public void addFavoriteRecipe(Recipe recipe){
+        favoriteRecipes.add(recipe);
+    }
+
+    public boolean removeFavoriteRecipe(Recipe recipe){
+        return favoriteRecipes.remove(recipe);
+    }
+
 
 }
