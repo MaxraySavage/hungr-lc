@@ -45,19 +45,20 @@
                 Instructions
             </h2>
                 <th:block th:each="step,iter : ${recipe.steps}">
-                            <label class="panel-block">
-                                <div class="level is-mobile">
-                                    <div class="level-left mr-3">
-                                        <div class="level-item">
-                                            <span class="tag" th:text="${iter.index+1}"></span>
-                                        </div>
+                            <a class="panel-block text-has-no-overflow">
+                                <div class="columns is-mobile">
+                                    <div class="column is-narrow">
+                                        <span class="tag" th:text="${iter.index+1}"></span>
                                     </div>
-                                    <div class="level-item">
+                                    <div class="column">
                                         <span th:text="${step.text}"></span>
                                     </div>
 
+
                                 </div>
-                            </label>
+
+
+                            </a>
                 </th:block>
         </div>
     </section>
