@@ -27,6 +27,49 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+  // Get all favorite buttons
+  const $favoriteRecipeButtons = Array.from(document.querySelectorAll('.favorite-button'))
+
+  //check to see if there are any favorite recipe buttons
+  if($favoriteRecipeButtons.length > 0) {
+    const favoriteBaseUrl = window.location.origin + '/favorite/';
+
+    $favoriteRecipeButtons.forEach( el => {
+        const targetRecipeId = el.dataset.targetRecipeId;
+        el.addEventListener('click', (event) => {
+            event.preventDefault();
+            fetch(favoriteBaseUrl + `?recipeId=${targetRecipeId}`, {
+                method: 'POST',
+                credentials: 'include',
+            })
+            .then((response) => {
+                return response.text()
+            }).then( text => {
+                const $favoriteButtonText =  el.querySelector('.favorite-button-text');
+                const $favoriteButtonIcon =  el.querySelector('.favorite-button-icon');
+                const $favoriteButtonCount = el.querySelector('.favorite-button-count');
+                if(text.startsWith('favorited')){
+                    $favoriteButtonText.innerText = `Unfavorite`;
+                    el.classList.add('is-danger');
+                    $favoriteButtonIcon.classList.remove('has-text-danger');
+                    $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) + 1;
+                } else if (text.startsWith('unfavorited')) {
+                    $favoriteButtonText.innerText = `Favorite`;
+                    el.classList.remove('is-danger');
+                    $favoriteButtonIcon.classList.add('has-text-danger');
+                    $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) - 1;
+                }
+                console.log(text)
+            })
+
+        })
+
+
+    });
+
+
+  }
+
   // Get all "navbar-burger" elements
   const $navbarBurgers = Array.from(document.querySelectorAll('.navbar-burger'));
 

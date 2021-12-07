@@ -56,6 +56,9 @@ public class RecipesController {
         }
         Recipe recipe = optionRecipe.get();
         boolean userIsAuthor = recipe.getAuthor().equals(model.getAttribute("user"));
+        boolean recipeIsFavorite = ((User) model.getAttribute("user")).getFavoriteRecipes().contains(recipe);
+
+        model.addAttribute("recipeIsFavorite", recipeIsFavorite);
         model.addAttribute("userIsAuthor",userIsAuthor);
         model.addAttribute("title", "Recipe Details");
         model.addAttribute("recipe", recipe);
@@ -165,11 +168,7 @@ public class RecipesController {
     }
 
     @PostMapping("delete")
-    public String processDeleteRecipe(@RequestParam(required = false) Integer recipeId, Model model){
-        if(recipeId == null){
-            // delete request without any id
-            return "redirect:/recipes";
-        }
+    public String processDeleteRecipe(@RequestParam Integer recipeId, Model model){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()){
             // delete request for an id that is not in the database
@@ -186,4 +185,5 @@ public class RecipesController {
         recipeRepository.delete(recipeToDelete);
         return "redirect:/recipes";
     }
+
 }
