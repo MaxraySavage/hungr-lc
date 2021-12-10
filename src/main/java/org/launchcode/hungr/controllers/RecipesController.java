@@ -7,6 +7,8 @@ import org.launchcode.hungr.models.Ingredient;
 import org.launchcode.hungr.models.Recipe;
 import org.launchcode.hungr.models.RecipeStep;
 import org.launchcode.hungr.models.User;
+import org.launchcode.hungr.models.dto.CreateRecipeFormDTO;
+import org.launchcode.hungr.models.dto.EditRecipeFormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -68,34 +69,26 @@ public class RecipesController {
     @GetMapping("create")
     public String renderCreateRecipeForm(Model model){
         model.addAttribute("title", "Add a Recipe");
-        model.addAttribute(new Recipe());
+        model.addAttribute(new CreateRecipeFormDTO());
         return "recipes/create";
     }
 
     @PostMapping("create")
-    public String processCreateRecipeForm(@ModelAttribute @Valid Recipe newRecipe, Errors errors, Model model, @RequestParam(required = false) List<String> ingredients, @RequestParam(required = false) List<String> steps){
-        if(errors.hasErrors() || ingredients == null || steps == null){
-            if(ingredients == null) {
-                model.addAttribute("ingredientsError", "Recipe must have ingredients");
-            }else {
-                model.addAttribute("ingredients", ingredients);
-            }
-            if(steps == null) {
-                model.addAttribute("stepsError", "Recipe must have steps");
-            }else {
-                model.addAttribute("steps", steps);
-            }
+    public String processCreateRecipeForm(@ModelAttribute @Valid CreateRecipeFormDTO recipeFormDTO, Errors errors, Model model){
+        if(errors.hasErrors()){
             return "recipes/create";
         }
+        Recipe newRecipe = new Recipe(recipeFormDTO.getName(), recipeFormDTO.getShortDescription());
         // TODO: this next line may need work? feels weird to do an inline cast like this
+        // Make a method that does this?
         newRecipe.setAuthor((User) model.getAttribute("user"));
         Recipe savedRecipe = recipeRepository.save(newRecipe);
-        for( String ingredientName : ingredients) {
+        for( String ingredientName : recipeFormDTO.getIngredients()) {
             Ingredient newIngredient = new Ingredient(ingredientName);
             newIngredient.setRecipe(savedRecipe);
             ingredientRepository.save(newIngredient);
         }
-        for( String stepText : steps) {
+        for( String stepText : recipeFormDTO.getSteps()) {
             RecipeStep newStep = new RecipeStep(stepText);
             newStep.setRecipe(savedRecipe);
             recipeStepRepository.save(newStep);
@@ -116,14 +109,15 @@ public class RecipesController {
             return "redirect:/recipes";
         }
 
+        EditRecipeFormDTO recipeFormDTO = new EditRecipeFormDTO(recipe);
         model.addAttribute("title", "Edit Recipe");
-        model.addAttribute("recipe", recipe);
+        model.addAttribute("recipeFormDTO", recipeFormDTO);
 
         return "recipes/edit";
     }
 
     @PostMapping("/edit/{recipeId}")
-    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid Recipe editedRecipe, Errors errors, @RequestParam(required = false) List<String> ingredients, @RequestParam(required = false) List<String> steps){
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid EditRecipeFormDTO recipeFormDTO, Errors errors){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
             // recipeId is not found in the database
@@ -134,31 +128,31 @@ public class RecipesController {
         boolean userIsAuthor = originalRecipe.getAuthor().equals(model.getAttribute("user"));
 
         if(! userIsAuthor) {
-            // the user trying to edit the recipe is not the author and shouldn't be allowed to edit it
+            // the user trying to edit the recipe is not the author, they shouldn't be allowed to edit it
             return "redirect:/recipes";
         }
 
-        if(errors.hasErrors()  || ingredients == null || ingredients.size() == 0 || steps == null || steps.size() == 0){
+        if(errors.hasErrors() ){
             // The proposed updated recipe doesn't meet validation requirements and shouldn't be saved to the database
             model.addAttribute("title", "Edit Recipe");
-            model.addAttribute("recipe", editedRecipe);
+            model.addAttribute("recipeFormDTO", recipeFormDTO);
             return "recipes/edit";
         }
 
         // edit recipe requests meets requirements and is acted on
 
-        originalRecipe.setName(editedRecipe.getName());
-        originalRecipe.setShortDescription(editedRecipe.getShortDescription());
+        originalRecipe.setName(recipeFormDTO.getName());
+        originalRecipe.setShortDescription(recipeFormDTO.getShortDescription());
 
         originalRecipe.getIngredients().clear();
         originalRecipe.getSteps().clear();
         Recipe savedRecipe = recipeRepository.save(originalRecipe);
-        for( String ingredientName : ingredients) {
+        for( String ingredientName : recipeFormDTO.getIngredients()) {
             Ingredient newIngredient = new Ingredient(ingredientName);
             newIngredient.setRecipe(savedRecipe);
             ingredientRepository.save(newIngredient);
         }
-        for( String stepText : steps) {
+        for( String stepText : recipeFormDTO.getSteps()) {
             RecipeStep newStep = new RecipeStep(stepText);
             newStep.setRecipe(originalRecipe);
             recipeStepRepository.save(newStep);

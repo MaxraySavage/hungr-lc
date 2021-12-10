@@ -6,12 +6,12 @@
 </head>
 <body>
 
-<th:block th:fragment="recipe-step-input(stepNumber, stepText)">
+<th:block th:fragment="recipe-step-input(stepIndex, stepText)">
     <article class="media recipe-step">
         <div class="media-left">
             <div class="control">
                 <div class="block">
-                    <span class="tag recipe-step-number" th:text="${stepNumber}"></span>
+                    <span class="tag recipe-step-number" th:text="${stepIndex + 1}"></span>
                 </div>
                 <button class="delete recipe-step-delete"></button>
             </div>
@@ -21,7 +21,7 @@
                 <div class="control">
                         <textarea
                                 class="textarea is-small step-input"
-                                name="steps"
+                                th:name="|steps[${stepIndex}]|"
                                 th:text="${stepText}"
                         ></textarea>
                 </div>
