@@ -1,43 +1,30 @@
+  // As this js script will be loaded on every page (as of now) the code follows a certain pattern
+  // After the page is loaded,
+  // we query the document to see if there are any HTML elements that match a certain selector
+  // usually a class
+  // then if any of those elements are found, we add an event listener to each element we found
+  // that creates the desired behavior
+  // I've used a naming convention where a variable beginning with $ represents a dom element or an array of dom elements
+
 document.addEventListener('DOMContentLoaded', () => {
   const parser = new DOMParser();
 
-  function detach(node) {
-    return node.parentElement.removeChild(node);
-  }
-
-  const panelBlockDeleteHandler = (event) => {
-      event.preventDefault();
-      const $button = event.target;
-      const $parentDiv = $button.closest('.panel-column');
-      $parentDiv.remove();
-  }
-
-  const recipeStepDeleteHandler = (event) => {
-        event.preventDefault();
-        let $recipeSteps = Array.from(document.querySelectorAll('.recipe-step'));
-        if($recipeSteps.length <= 1){
-            return
-        }
-        const $button = event.target;
-        const $parentDiv = $button.closest('.recipe-step');
-        $parentDiv.remove();
-        $recipeSteps = Array.from(document.querySelectorAll('.recipe-step'));
-        $recipeSteps.forEach( (el, index) => {
-            el.querySelector('.media-left').querySelector('label').innerText = `${index + 1}.`
-        })
-    }
-
-  // Get all favorite buttons
+  // Query for all favorite buttons
   const $favoriteRecipeButtons = Array.from(document.querySelectorAll('.favorite-button'))
 
   //check to see if there are any favorite recipe buttons
   if($favoriteRecipeButtons.length > 0) {
     const favoriteBaseUrl = window.location.origin + '/favorite/';
 
+    // add event listeners to each favorite button
     $favoriteRecipeButtons.forEach( el => {
-        const targetRecipeId = el.dataset.targetRecipeId;
         el.addEventListener('click', (event) => {
             event.preventDefault();
+
+            // Get recipeId from targetRecipeId data field on button element
+            const targetRecipeId = el.dataset.targetRecipeId;
+
+            // Send HTTP POST request to favorite URL, credentials includes the session cookie
             fetch(favoriteBaseUrl + `?recipeId=${targetRecipeId}`, {
                 method: 'POST',
                 credentials: 'include',
@@ -48,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const $favoriteButtonText =  el.querySelector('.favorite-button-text');
                 const $favoriteButtonIcon =  el.querySelector('.favorite-button-icon');
                 const $favoriteButtonCount = el.querySelector('.favorite-button-count');
+
+                // database response is of the form 'favorited recipe successfully' or 'unfavorited recipe successfully'
+                // use response to switch button state as appropriate
                 if(text.startsWith('favorited')){
                     $favoriteButtonText.innerText = `Unfavorite`;
                     el.classList.add('is-danger');
@@ -91,6 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const panelBlockDeleteHandler = (event) => {
+        event.preventDefault();
+        const $button = event.target;
+        const $parentDiv = $button.closest('.panel-column');
+        $parentDiv.remove();
+  }
+
   const $panelBlockDeleteButtons = Array.from(document.querySelectorAll('.panel-block-delete'));
   if ($panelBlockDeleteButtons.length > 0) {
     $panelBlockDeleteButtons.forEach( el => {
@@ -131,14 +128,39 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  const $addRecipeStepButton = document.getElementById('add-recipe-step-button');
+
+  // this function deletes the closest parent dom element that matches .recipe-step
+  // starting from event.target
+  // and then renumbers the recipe steps accordingly
+  const recipeStepDeleteHandler = (event) => {
+      event.preventDefault();
+      // we don't want to delete the step if there is only one on the page
+      let $recipeSteps = Array.from(document.querySelectorAll('.recipe-step'));
+      if($recipeSteps.length <= 1){
+          return
+      }
+      // get the closest parent element that is a recipe-step and remove it
+      const $parentDiv = event.target.closest('.recipe-step').remove();
+
+      // update the numbering on the recipe steps
+      $recipeStepsNumbers = Array.from(document.querySelectorAll('.recipe-step-number'));
+      $recipeStepsNumbers.forEach( (el, index) => {
+          el.innerText = `${index + 1}.`
+      })
+  }
+
+
+
   const $deleteRecipeStepButtons = document.querySelectorAll('.recipe-step-delete');
 
+// add the recipe step delete handler to the recipe step delete buttons
   if ($deleteRecipeStepButtons.length > 0) {
     $deleteRecipeStepButtons.forEach( el => {
         el.addEventListener('click', recipeStepDeleteHandler);
     });
   }
+
+  const $addRecipeStepButton = document.getElementById('add-recipe-step-button');
 
   if($addRecipeStepButton) {
     const $recipeStepContainer = document.getElementById('recipe-step-container');
@@ -151,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                          <div class="media-left">
                                             <div class="control">
                                                 <div class="block">
-                                                    <span class="tag">${$recipeSteps.length + 1}</span>
+                                                    <span class="tag recipe-step-number">${$recipeSteps.length + 1}</span>
                                                 </div>
                                                 <button class="delete recipe-step-delete"></button>
                                             </div>
@@ -172,9 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         newNodes.querySelector('.recipe-step-delete').addEventListener('click', recipeStepDeleteHandler);
 
-
         $recipeStepContainer.appendChild(newNodes.body.firstChild);
-
 
     });
 
