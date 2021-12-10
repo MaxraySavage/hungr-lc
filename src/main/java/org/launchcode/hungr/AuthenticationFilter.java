@@ -21,10 +21,10 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
     @Autowired
     AuthenticationController authenticationController;
 
-    private static final List<String> whitelist = Arrays.asList("/login", "/signup", "/logout","/css", "/images", "/fontawesome", "/script", "/webfonts");
+    private static final List<String> allowlist = Arrays.asList("/login", "/signup", "/logout","/css", "/images", "/fontawesome", "/script", "/webfonts");
 
-    private static boolean isWhitelisted(String path) {
-        for (String pathRoot : whitelist) {
+    private static boolean isAllowlisted(String path) {
+        for (String pathRoot : allowlist) {
             if (path.startsWith(pathRoot)) {
                 return true;
             }
@@ -47,7 +47,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
         }
 
         // Don't require sign-in for whitelisted pages
-        if (isWhitelisted(request.getRequestURI())) {
+        if (isAllowlisted(request.getRequestURI())) {
             // returning true indicates that the request may proceed
             return true;
         }
