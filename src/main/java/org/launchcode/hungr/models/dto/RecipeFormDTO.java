@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeDTO {
+public class RecipeFormDTO {
 
     @NotBlank(message="Name must not be blank.")
     @Size(max=100, message="Name must be less than 100 characters")
@@ -18,6 +18,12 @@ public class RecipeDTO {
     private List<String> ingredients = new ArrayList<>();
 
     private List<String> steps = new ArrayList<>();
+
+    public RecipeFormDTO() {
+        this.steps.add("");
+    }
+
+
 
     public String getName() {
         return name;

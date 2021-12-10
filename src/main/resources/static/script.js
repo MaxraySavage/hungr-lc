@@ -81,11 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const resetPanelBlockInputIndexing = (panelBlockContainer) => {
+    $panelInputs = Array.from(panelBlockContainer.querySelectorAll('input[type="checkbox"]'));
+    $panelInputs.forEach( (el, index) => {
+        // will produce weird behavior if el.name isn't exactly of the form 'text[index]'
+        const nameArray = el.name.split('[');
+        nameArray[1] = index;
+        el.name = nameArray.join('[').concat(']');
+    });
+  }
+
   const panelBlockDeleteHandler = (event) => {
         event.preventDefault();
         const $button = event.target;
         const $parentDiv = $button.closest('.panel-column');
+        const $panelBlockContainer = $button.closest('.columns');
         $parentDiv.remove();
+        resetPanelBlockInputIndexing($panelBlockContainer);
   }
 
   const $panelBlockDeleteButtons = Array.from(document.querySelectorAll('.panel-block-delete'));
@@ -106,12 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const displayDestination = el.dataset.textDisplay;
         const $displayDestination = document.getElementById(displayDestination);
 
+        const inputName = $source.dataset.name;
+        const inputIndex = $displayDestination.querySelectorAll('input').length;
+        const inputVal = $source.value;
+
         const newHTML = `<div class="column is-half panel-column">
                              <label class="panel-block">
                                     <span class="panel-icon panel-block-delete">
                                        <i class="fas fa-times-circle" aria-hidden="true"></i>
                                      </span>
-                                     <input class="is-hidden" type="checkbox" name="${$source.dataset.name}" value="${$source.value}" checked>
+                                     <input class="is-hidden" type="checkbox" name="${inputName}[${inputIndex}]" value="${inputVal}" checked>
                                      <span>${$source.value}</span>
                              </label>
                          </div>`;
@@ -143,10 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const $parentDiv = event.target.closest('.recipe-step').remove();
 
       // update the numbering on the recipe steps
-      $recipeStepsNumbers = Array.from(document.querySelectorAll('.recipe-step-number'));
-      $recipeStepsNumbers.forEach( (el, index) => {
-          el.innerText = `${index + 1}.`
-      })
+      $recipeSteps = Array.from(document.querySelectorAll('.recipe-step'));
+      $recipeSteps.forEach( (el, index) => {
+          el.querySelector('.recipe-step-number').innerText = `${index + 1}.`;
+          el.querySelector('textarea').name = `steps[${index}]`;
+      });
   }
 
 
@@ -167,13 +184,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $addRecipeStepButton.addEventListener('click', (e) => {
         e.preventDefault()
-        const $recipeSteps = Array.from($recipeStepContainer.querySelectorAll('.recipe-step'));
+        const stepIndex = Array.from($recipeStepContainer.querySelectorAll('.recipe-step')).length;
 
         const newHTML = `<article class="media recipe-step">
                                          <div class="media-left">
                                             <div class="control">
                                                 <div class="block">
-                                                    <span class="tag recipe-step-number">${$recipeSteps.length + 1}</span>
+                                                    <span class="tag recipe-step-number">${stepIndex + 1}</span>
                                                 </div>
                                                 <button class="delete recipe-step-delete"></button>
                                             </div>
@@ -183,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                                  <div class="control">
                                                  <textarea
                                                          class="textarea is-small step-input"
-                                                         name="steps"
+                                                         name="steps[${stepIndex}]"
                                                  ></textarea>
                                                  </div>
                                              </div>
