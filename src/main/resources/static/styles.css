@@ -2,8 +2,7 @@
     width: 100%;
 }
 
-.text-has-no-overflow {
+.text-hide-overflow {
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
 }
