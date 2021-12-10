@@ -11,29 +11,29 @@
 
 <form method="post">
     <div class="container box">
-        <input type="hidden" th:field="${recipe.id}">
+        <input type="hidden" th:field="${recipeFormDTO.id}">
         <div class="field">
             <label class="label">Recipe Name</label>
             <div class="control">
                 <input
-                        th:field="${recipe.name}"
+                        th:field="${recipeFormDTO.name}"
                         class="input"
                         th:errorclass="is-danger"
                         type="text"
                 >
             </div>
-            <p class="help is-danger" th:errors="${recipe.name}"></p>
+            <p class="help is-danger" th:errors="${recipeFormDTO.name}"></p>
         </div>
         <div class="field">
             <label class="label">Short Description</label>
             <div class="control">
                 <textarea
-                        th:field="${recipe.shortDescription}"
+                        th:field="${recipeFormDTO.shortDescription}"
                         class="textarea"
                         th:errorclass="is-danger"
                 ></textarea>
             </div>
-            <p class="help is-danger" th:errors="${recipe.shortDescription}"></p>
+            <p class="help is-danger" th:errors="${recipeFormDTO.shortDescription}"></p>
         </div>
     </div>
 
@@ -50,7 +50,7 @@
                         <span class="icon is-left">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                         </span>
-                        <p class="help is-danger" th:text="${ingredientsError} "></p>
+                        <p class="help is-danger" th:errors="${recipeFormDTO.ingredients}"></p>
                     </div>
                     <div class="control">
                         <a class="button is-info is-panel-input-button" data-text-source="ingredient-text-input"
@@ -61,15 +61,15 @@
                 </div>
             </div>
             <div class="columns is-multiline is-gapless" id="ingredient-input-display">
-                <th:block th:each="ingredient: ${recipe.ingredients}">
+                <th:block th:each="ingredient,iter : ${recipeFormDTO.ingredients}">
                     <div class="column is-half panel-column">
                             <label class="panel-block">
                                 <span class="panel-icon panel-block-delete">
                                     <i class="fas fa-times-circle" aria-hidden="true"></i>
                                 </span>
-                                <input class="is-hidden" type="checkbox" name="ingredients" th:value="${ingredient.name}"
+                                <input class="is-hidden" type="checkbox" th:name="|ingredients[${iter.index}]|" th:value="${ingredient}"
                                        checked>
-                                <span th:text="${ingredient.name}"></span>
+                                <span th:text="${ingredient}"></span>
                             </label>
                     </div>
                 </th:block>
@@ -79,13 +79,13 @@
         <div class="box">
             <div class="block" id="recipe-step-container">
                 <h1 class="title is-4">Recipe Steps</h1>
-                <th:block th:unless="${recipe.steps} and ${recipe.steps.size()}">
-                    <div th:replace="recipes/fragments :: recipe-step-input(1, '')">
+                <th:block th:unless="${recipeFormDTO.steps} and ${recipeFormDTO.steps.size()}">
+                    <div th:replace="recipes/fragments :: recipe-step-input(0, '')">
                     </div>
                 </th:block>
 
-                <th:block th:each="step,iter : ${recipe.steps}">
-                    <div th:replace="recipes/fragments :: recipe-step-input(${iter.index + 1}, ${step.text})">
+                <th:block th:each="step,iter : ${recipeFormDTO.steps}">
+                    <div th:replace="recipes/fragments :: recipe-step-input(${iter.index}, ${step})">
                     </div>
                 </th:block>
 
@@ -104,7 +104,7 @@
         <div class="field is-grouped">
             <div class="control">
                 <input type="submit" class="button is-link" value="Save"/>
-                <a class="button" th:href="@{/recipes/details/} + ${recipe.getId()}">Cancel</a>
+                <a class="button" th:href="@{/recipes/details/} + ${recipeFormDTO.getId()}">Cancel</a>
             </div>
         </div>
     </div>
