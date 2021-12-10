@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     $favoriteButtonIcon.classList.add('has-text-danger');
                     $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) - 1;
                 }
-                console.log(text)
             })
 
         })

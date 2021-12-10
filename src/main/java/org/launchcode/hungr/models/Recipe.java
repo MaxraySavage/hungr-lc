@@ -79,4 +79,8 @@ public class Recipe extends AbstractEntity{
     public int favoriteCount() {
         return favoritedByUsers.size();
     }
+
+    public boolean isUserFavorite(User user) {
+        return favoritedByUsers.contains(user);
+    }
 }
