@@ -21,35 +21,7 @@
 </div>
 <div class="container is-fluid">
     <th:block th:each="recipe : ${recipes}">
-        <a th:href="@{/recipes/details/} + ${recipe.getId()}" class="box">
-                <article class="media">
-                    <div class="media-left">
-                        <div class="block">
-                        <figure class="image is-64x64">
-                            <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
-                        </figure>
-                        </div>
-                        <div class="block">
-                            by
-                            <span class="tag">
-                                <strong th:text="${recipe.author.username}"></strong>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong th:text="${recipe.getName()}">Recipe Name</strong>
-                                <br>
-                                <span th:text="${recipe.getShortDescription()}"></span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="media-right">
-
-                    </div>
-                </article>
-        </a>
+        <div th:replace="fragments :: recipe-list-item(${recipe})"></div>
     </th:block>
 </div>
 </body>

@@ -19,17 +19,7 @@
                     </p>
                 </div>
             </div>
-            <button type="submit" class="button favorite-button" th:classappend="${recipeIsFavorite ? 'is-danger' : ''}" th:data-target-recipe-id="${recipe.id}">
-                <span class="favorite-button-text is-hidden" th:text="${recipeIsFavorite ? 'Unfavorite' : 'Favorite'}">
-                    Favorite
-                </span>
-                <span class="favorite-button-count" th:text="${recipe.favoriteCount()}">
-
-                </span>
-                <span class="icon favorite-button-icon" th:classappend="${!recipeIsFavorite ? 'has-text-danger' : ''}">
-                    <i class="fas fa-heart"></i>
-                </span>
-            </button>
+            <button th:replace="fragments :: favorite-button(${recipe}, ${recipe.isUserFavorite(user)})"></button>
     </section>
 
     <section class="section">
@@ -56,19 +46,15 @@
                 Instructions
             </h2>
                 <th:block th:each="step,iter : ${recipe.steps}">
-                            <a class="panel-block text-has-no-overflow">
+                            <a class="panel-block text-hide-overflow">
                                 <div class="columns is-mobile">
                                     <div class="column is-narrow">
-                                        <span class="tag" th:text="${iter.index+1}"></span>
+                                        <span class="tag recipe-step-number" th:text="${iter.index+1}"></span>
                                     </div>
                                     <div class="column">
                                         <span th:text="${step.text}"></span>
                                     </div>
-
-
                                 </div>
-
-
                             </a>
                 </th:block>
         </div>
