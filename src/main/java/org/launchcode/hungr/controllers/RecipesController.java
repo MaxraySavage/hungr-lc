@@ -69,26 +69,27 @@ public class RecipesController {
     @GetMapping("create")
     public String renderCreateRecipeForm(Model model){
         model.addAttribute("title", "Add a Recipe");
-        model.addAttribute(new CreateRecipeFormDTO());
+        model.addAttribute("createRecipeFormDTO", new CreateRecipeFormDTO());
         return "recipes/create";
     }
 
     @PostMapping("create")
-    public String processCreateRecipeForm(@ModelAttribute @Valid CreateRecipeFormDTO recipeFormDTO, Errors errors, Model model){
+    public String processCreateRecipeForm( Model model, @ModelAttribute @Valid CreateRecipeFormDTO createRecipeFormDTO, Errors errors){
         if(errors.hasErrors()){
+            model.addAttribute("title", "Add a Recipe");
             return "recipes/create";
         }
-        Recipe newRecipe = new Recipe(recipeFormDTO.getName(), recipeFormDTO.getShortDescription());
+        Recipe newRecipe = new Recipe(createRecipeFormDTO.getName(), createRecipeFormDTO.getShortDescription());
         // TODO: this next line may need work? feels weird to do an inline cast like this
         // Make a method that does this?
         newRecipe.setAuthor((User) model.getAttribute("user"));
         Recipe savedRecipe = recipeRepository.save(newRecipe);
-        for( String ingredientName : recipeFormDTO.getIngredients()) {
+        for( String ingredientName : createRecipeFormDTO.getIngredients()) {
             Ingredient newIngredient = new Ingredient(ingredientName);
             newIngredient.setRecipe(savedRecipe);
             ingredientRepository.save(newIngredient);
         }
-        for( String stepText : recipeFormDTO.getSteps()) {
+        for( String stepText : createRecipeFormDTO.getSteps()) {
             RecipeStep newStep = new RecipeStep(stepText);
             newStep.setRecipe(savedRecipe);
             recipeStepRepository.save(newStep);
@@ -109,15 +110,15 @@ public class RecipesController {
             return "redirect:/recipes";
         }
 
-        EditRecipeFormDTO recipeFormDTO = new EditRecipeFormDTO(recipe);
+        EditRecipeFormDTO editRecipeFormDTO = new EditRecipeFormDTO(recipe);
         model.addAttribute("title", "Edit Recipe");
-        model.addAttribute("recipeFormDTO", recipeFormDTO);
+        model.addAttribute("editRecipeFormDTO", editRecipeFormDTO);
 
         return "recipes/edit";
     }
 
     @PostMapping("/edit/{recipeId}")
-    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid EditRecipeFormDTO recipeFormDTO, Errors errors){
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid EditRecipeFormDTO editRecipeFormDTO, Errors errors){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
             // recipeId is not found in the database
@@ -135,24 +136,24 @@ public class RecipesController {
         if(errors.hasErrors() ){
             // The proposed updated recipe doesn't meet validation requirements and shouldn't be saved to the database
             model.addAttribute("title", "Edit Recipe");
-            model.addAttribute("recipeFormDTO", recipeFormDTO);
+            model.addAttribute("editRecipeFormDTO", editRecipeFormDTO);
             return "recipes/edit";
         }
 
         // edit recipe requests meets requirements and is acted on
 
-        originalRecipe.setName(recipeFormDTO.getName());
-        originalRecipe.setShortDescription(recipeFormDTO.getShortDescription());
+        originalRecipe.setName(editRecipeFormDTO.getName());
+        originalRecipe.setShortDescription(editRecipeFormDTO.getShortDescription());
 
         originalRecipe.getIngredients().clear();
         originalRecipe.getSteps().clear();
         Recipe savedRecipe = recipeRepository.save(originalRecipe);
-        for( String ingredientName : recipeFormDTO.getIngredients()) {
+        for( String ingredientName : editRecipeFormDTO.getIngredients()) {
             Ingredient newIngredient = new Ingredient(ingredientName);
             newIngredient.setRecipe(savedRecipe);
             ingredientRepository.save(newIngredient);
         }
-        for( String stepText : recipeFormDTO.getSteps()) {
+        for( String stepText : editRecipeFormDTO.getSteps()) {
             RecipeStep newStep = new RecipeStep(stepText);
             newStep.setRecipe(originalRecipe);
             recipeStepRepository.save(newStep);

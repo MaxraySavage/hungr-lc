@@ -19,27 +19,27 @@
             <label class="label">Recipe Name</label>
             <div class="control">
                 <input
-                        th:field="${recipeFormDTO.name}"
+                        th:field="${createRecipeFormDTO.name}"
                         class="input"
                         th:errorclass="is-danger"
                         type="text"
                         placeholder="What's cooking?"
-                >
+                />
             </div>
-            <p class="help is-danger" th:errors="${recipeFormDTO.name}"></p>
+            <p class="help is-danger" th:errors="${createRecipeFormDTO.name}"></p>
         </div>
 
         <div class="field">
             <label class="label">Short Description</label>
             <div class="control">
                 <textarea
-                        th:field="${recipeFormDTO.shortDescription}"
+                        th:field="${createRecipeFormDTO.shortDescription}"
                         class="textarea"
                         th:errorclass="is-danger"
                         placeholder="A short description of this meal!"
                 ></textarea>
             </div>
-            <p class="help is-danger" th:errors="${recipeFormDTO.shortDescription}"></p>
+            <p class="help is-danger" th:errors="${createRecipeFormDTO.shortDescription}"></p>
         </div>
     </div>
 
@@ -52,11 +52,11 @@
                 <div class="field has-addons is-panel-input-field">
                     <div class="control is-expanded has-icons-left">
                         <input class="input is-warning is-panel-text-input" type="text" placeholder="Add an Ingredient"
-                               id="ingredient-text-input" data-name="ingredients">
+                               id="ingredient-text-input" data-name="ingredients"/>
                         <span class="icon is-left">
                             <i class="fas fa-plus-circle" aria-hidden="true"></i>
                         </span>
-                        <p class="help is-danger" th:errors="${recipeFormDTO.ingredients}"></p>
+                        <p class="help is-danger" th:errors="${createRecipeFormDTO.ingredients}"></p>
                     </div>
                     <div class="control">
                         <a class="button is-info is-panel-input-button" data-text-source="ingredient-text-input"
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="columns is-multiline is-gapless" id="ingredient-input-display">
-                <th:block th:each="ingredient,iter : ${recipeFormDTO.ingredients}">
+                <th:block th:each="ingredient,iter : ${createRecipeFormDTO.ingredients}">
                     <div class="column is-half panel-column">
                         <label class="panel-block">
                             <span class="panel-icon panel-block-delete">
@@ -86,13 +86,12 @@
             <div class="block" id="recipe-step-container">
                 <h1 class="title is-4">Recipe Steps</h1>
                 <h2 class="subtitle is-6">Show us how it's done.</h2>
-                <th:block th:unless="${recipeFormDTO.steps} and ${recipeFormDTO.steps.size()}">
+                <th:block th:unless="${createRecipeFormDTO.steps} and ${createRecipeFormDTO.steps.size()}">
                     <div th:replace="recipes/fragments :: recipe-step-input(0, '')">
                     </div>
-                    oh wow
                 </th:block>
 
-                <th:block th:each="step,iter : ${recipeFormDTO.steps}">
+                <th:block th:each="step,iter : ${createRecipeFormDTO.steps}">
                     <div th:replace="recipes/fragments :: recipe-step-input(${iter.index}, ${step})">
                     </div>
                 </th:block>
