@@ -82,8 +82,7 @@
 </nav>
 
 <th:block th:fragment="recipe-list-item(recipe)">
-    <a th:href="@{/recipes/details/} + ${recipe.getId()}">
-        <div class="box">
+    <a th:href="@{/recipes/details/} + ${recipe.getId()}" class="box">
             <article class="media">
                 <div class="media-left">
                     <div class="block">
@@ -111,7 +110,6 @@
                     <strong th:text="${recipe.author.username}"></strong>
                 </span>
             </div>
-        </div>
     </a>
 </th:block>
 

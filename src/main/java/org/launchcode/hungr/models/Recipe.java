@@ -30,7 +30,7 @@ public class Recipe extends AbstractEntity{
     @ManyToOne(fetch = FetchType.EAGER)
     private User author;
 
-    @ManyToMany(mappedBy = "favoriteRecipes")
+    @ManyToMany(mappedBy = "favoriteRecipes", fetch = FetchType.EAGER)
     private final List<User> favoritedByUsers = new ArrayList<>();
 
     public Recipe() {}

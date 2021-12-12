@@ -212,12 +212,41 @@ document.addEventListener('DOMContentLoaded', () => {
         newNodes.querySelector('.recipe-step-delete').addEventListener('click', recipeStepDeleteHandler);
 
         $recipeStepContainer.appendChild(newNodes.body.firstChild);
-
     });
-
-
   }
 
+  const $tabsContainer = Array.from(document.querySelectorAll('.tabs'));
+
+  if($tabsContainer.length > 0) {
+        $tabsContainer.forEach( el => {
+            const targetContainerId = el.dataset.target;
+            const $targetContainer = document.getElementById(targetContainerId);
+            const $targetTabs = Array.from($targetContainer.querySelectorAll('.target-tab'));
+
+            const setActiveTargetTab = (targetTabId) => {
+                $targetTabs.forEach( tab => {
+                    if(tab.id === targetTabId) {
+                        tab.classList.remove('is-hidden');
+                    } else {
+                        tab.classList.add('is-hidden');
+                    }
+                });
+            }
+
+            const $tabArray = el.querySelectorAll('a[data-target-tab]');
+            $tabArray.forEach( tab => {
+                const targetTabId = tab.dataset.targetTab;
+                tab.addEventListener('click', event => {
+                    event.preventDefault();
+                    setActiveTargetTab(targetTabId);
+                    $tabArray.forEach( el => {
+                        el.closest('li').classList.remove('is-active');
+                    })
+                    tab.closest('li').classList.add('is-active');
+                });
+            });
+        });
+  }
 
 
 });
