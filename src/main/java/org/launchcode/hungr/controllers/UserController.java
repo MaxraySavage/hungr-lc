@@ -52,6 +52,8 @@ public class UserController {
     @PostMapping("favorite")
     @ResponseBody
     public String processFavoriteRecipeRequest(@RequestParam Integer recipeId, Model model, HttpServletResponse response){
+        // TODO: This is currently not idempotent, should be refactored
+
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()){
             // target recipe not found

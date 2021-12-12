@@ -5,15 +5,18 @@ import org.launchcode.hungr.models.Recipe;
 import org.launchcode.hungr.models.RecipeStep;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateRecipeFormDTO {
 
+
     @NotBlank(message="Name must not be blank.")
     @Size(max=100, message="Name must be less than 100 characters")
     private String name;
+
 
     @NotBlank(message="Description must not be blank")
     @Size(max=240, message="Description must be less than 240 characters")
@@ -24,7 +27,6 @@ public class CreateRecipeFormDTO {
     private List<String> steps = new ArrayList<>();
 
     public CreateRecipeFormDTO() {
-        this.steps.add("");
     }
 
     public CreateRecipeFormDTO(Recipe recipe) {
