@@ -33,7 +33,7 @@ public class RecipesController {
     private RecipeStepRepository recipeStepRepository;
 
     @ModelAttribute
-    public void addUserAttributes(Model model, HttpServletRequest request) {
+    public void addUserAttributeToModel(Model model, HttpServletRequest request) {
         Object userObj = request.getAttribute("user");
         if(userObj != null && userObj instanceof User){
             model.addAttribute("user", userObj);
