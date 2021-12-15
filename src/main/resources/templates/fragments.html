@@ -100,21 +100,24 @@
                         </p>
                     </div>
                 </div>
-                <div class="media-right">
+            </article>
+            <div class="level mt-3 is-mobile">
+                <div class="level-left">
                     <button th:replace="fragments :: favorite-button(${recipe}, ${recipe.isUserFavorite(user)})"></button>
                 </div>
-            </article>
-            <div class="block mt-3">
-                by
-                <span class="tag">
-                    <strong th:text="${recipe.author.username}"></strong>
-                </span>
+                <div class="level-right">
+                    by
+                    <span class="tag">
+                        <strong th:text="${recipe.author.username}"></strong>
+                    </span>
+                </div>
+
             </div>
     </a>
 </th:block>
 
 <th:block th:fragment="favorite-button(recipe, isUserFavorite)">
-    <button type="button" class="button favorite-button" th:classappend="${isUserFavorite ? 'is-danger' : ''}"
+    <button type="button" class="button is-small is-rounded favorite-button" th:classappend="${isUserFavorite ? 'is-danger' : ''}"
             th:data-target-recipe-id="${recipe.id}">
 
         <span class="favorite-button-text is-hidden" th:text="${isUserFavorite ? 'Unfavorite' : 'Favorite'}">
