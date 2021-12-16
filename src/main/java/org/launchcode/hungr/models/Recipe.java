@@ -83,4 +83,12 @@ public class Recipe extends AbstractEntity{
     public boolean isUserFavorite(User user) {
         return favoritedByUsers.contains(user);
     }
+
+    @PreRemove
+    private void removeRecipesFromUserFavorites() {
+        // prevents foreign key constraint problems when deleting a recipe that has been favorited
+        for (User u : favoritedByUsers) {
+            u.getFavoriteRecipes().remove(this);
+        }
+    }
 }

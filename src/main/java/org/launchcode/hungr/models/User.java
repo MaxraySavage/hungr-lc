@@ -50,11 +50,17 @@ public class User extends AbstractEntity{
 
 
     public void addFavoriteRecipe(Recipe recipe){
-        favoriteRecipes.add(recipe);
+        if(!favoriteRecipes.contains(recipe)){
+            favoriteRecipes.add(recipe);
+        }
     }
 
     public boolean removeFavoriteRecipe(Recipe recipe){
         return favoriteRecipes.remove(recipe);
+    }
+
+    public boolean removeFavoriteRecipeById(Integer recipeId) {
+        return favoriteRecipes.removeIf(recipe -> recipe.getId() == recipeId);
     }
 
 

@@ -42,6 +42,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
 
         // The user is logged in
         if (user != null) {
+            // add user attribute to request so we only need one database lookup for the user per request
             request.setAttribute("user", user);
             return true;
         }
@@ -51,8 +52,6 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
             // returning true indicates that the request may proceed
             return true;
         }
-
-
 
         // The user is NOT logged in
         response.sendRedirect("/login");
