@@ -14,51 +14,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //check to see if there are any favorite recipe buttons
   if($favoriteRecipeButtons.length > 0) {
-    const favoriteBaseUrl = window.location.origin + '/favorite/';
+    const favoriteBaseUrl = window.location.origin + '/users/favoriteRecipes/';
 
     // add event listeners to each favorite button
     $favoriteRecipeButtons.forEach( el => {
+        // Get recipeId from targetRecipeId data field on button element
+        const targetRecipeId = el.dataset.targetRecipeId;
         el.addEventListener('click', (event) => {
             event.preventDefault();
 
-            // Get recipeId from targetRecipeId data field on button element
-            const targetRecipeId = el.dataset.targetRecipeId;
+            const $favoriteButtonText =  el.querySelector('.favorite-button-text');
+            if($favoriteButtonText.innerText !== 'Favorite' && $favoriteButtonText.innerText !== 'Unfavorite'){
+                return;
+            }
+
+            fetchMethod = $favoriteButtonText.innerText === 'Favorite' ? 'POST' : 'DELETE';
 
             // Send HTTP POST request to favorite URL, credentials includes the session cookie
             fetch(favoriteBaseUrl + `?recipeId=${targetRecipeId}`, {
-                method: 'POST',
+                method: fetchMethod,
                 credentials: 'include',
             })
             .then((response) => {
                 return response.text()
             }).then( text => {
-                const $favoriteButtonText =  el.querySelector('.favorite-button-text');
                 const $favoriteButtonIcon =  el.querySelector('.favorite-button-icon');
                 const $favoriteButtonCount = el.querySelector('.favorite-button-count');
 
                 // database response is of the form 'favorited recipe successfully' or 'unfavorited recipe successfully'
                 // use response to switch button state as appropriate
-                if(text.startsWith('favorited')){
+                if(fetchMethod === 'POST'){
                     $favoriteButtonText.innerText = `Unfavorite`;
                     el.classList.add('is-danger');
                     $favoriteButtonIcon.classList.remove('has-text-danger');
                     $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) + 1;
-                } else if (text.startsWith('unfavorited')) {
+                } else if (fetchMethod === 'DELETE') {
                     $favoriteButtonText.innerText = `Favorite`;
                     el.classList.remove('is-danger');
                     $favoriteButtonIcon.classList.add('has-text-danger');
                     $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) - 1;
                 }
             })
-
         })
-
-
     });
-
-
   }
 
+  // From stackoverflow
+  // https://stackoverflow.com/questions/41137114/im-trying-to-use-hamburger-menu-on-bulma-css-but-it-doesnt-work-what-is-wron
   // Get all "navbar-burger" elements
   const $navbarBurgers = Array.from(document.querySelectorAll('.navbar-burger'));
 
@@ -215,34 +217,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const $tabsContainer = Array.from(document.querySelectorAll('.tabs'));
+  const $tabsContainers = document.querySelectorAll('.tabs');
 
-  if($tabsContainer.length > 0) {
-        $tabsContainer.forEach( el => {
-            const targetContainerId = el.dataset.target;
-            const $targetContainer = document.getElementById(targetContainerId);
-            const $targetTabs = Array.from($targetContainer.querySelectorAll('.target-tab'));
+  if($tabsContainers.length > 0) {
+        $tabsContainers.forEach( el => {
+            const contentContainerId = el.dataset.contentContainer;
+            const $contentContainer = document.getElementById(contentContainerId);
+            const $tabContentNodes = $contentContainer.querySelectorAll('.tab-content');
+            
 
-            const setActiveTargetTab = (targetTabId) => {
-                $targetTabs.forEach( tab => {
-                    if(tab.id === targetTabId) {
-                        tab.classList.remove('is-hidden');
-                    } else {
-                        tab.classList.add('is-hidden');
-                    }
-                });
+            const setActiveTabContent = (tabContentId) => {
+              $tabContentNodes.forEach( tabContent => {
+                  if(tabContent.id === tabContentId) {
+                      tabContent.classList.remove('is-hidden');
+                  } else {
+                      tabContent.classList.add('is-hidden');
+                  }
+              });
             }
 
-            const $tabArray = el.querySelectorAll('a[data-target-tab]');
+            const $tabArray = el.querySelectorAll('a[data-tab-content]');
+
+            const setActiveTab = (tabToActivate) => {
+              $tabArray.forEach( tab => {
+                if(tab.isSameNode(tabToActivate)) {
+                  const contentToActivateId = tab.dataset.tabContent;
+                  setActiveTabContent(contentToActivateId);
+                  tab.closest('li').classList.add('is-active');
+                } else {
+                  tab.closest('li').classList.remove('is-active');
+                }
+              })
+            }
+
+
             $tabArray.forEach( tab => {
-                const targetTabId = tab.dataset.targetTab;
                 tab.addEventListener('click', event => {
                     event.preventDefault();
-                    setActiveTargetTab(targetTabId);
-                    $tabArray.forEach( el => {
-                        el.closest('li').classList.remove('is-active');
-                    })
-                    tab.closest('li').classList.add('is-active');
+                    setActiveTab(tab);
                 });
             });
         });

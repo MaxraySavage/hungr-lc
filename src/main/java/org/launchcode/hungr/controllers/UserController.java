@@ -89,4 +89,55 @@ public class UserController {
         return "favorited recipe successfully";
     }
 
+    @PostMapping("users/favoriteRecipes")
+    @ResponseBody
+    public String addFavoriteRecipe(@RequestParam Integer recipeId, HttpServletResponse response, Model model){
+
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
+        if(optionalRecipe.isEmpty()){
+            // target recipe not found
+            response.setStatus(404);
+            return "recipe not found";
+        }
+        Recipe targetRecipe = optionalRecipe.get();
+
+        Object requestingUserObj = model.getAttribute("user");
+        if(requestingUserObj == null || !(requestingUserObj instanceof User)){
+            // no valid requesting user
+            response.setStatus(401);
+            return "request must be from authenticated user";
+        }
+
+        // if we are here, everything checks out
+        User requestingUser = (User) requestingUserObj;
+        if(requestingUser.getFavoriteRecipes().contains(targetRecipe)){
+            // recipe has already been added
+            response.setStatus(200);
+            return "recipe added to favorites";
+        }
+
+        requestingUser.addFavoriteRecipe(targetRecipe);
+        userRepository.save(requestingUser);
+        response.setStatus(200);
+        return "added recipe to favorites";
+    }
+
+    @DeleteMapping("users/favoriteRecipes")
+    @ResponseBody
+    public String deleteFavoriteRecipe(@RequestParam Integer recipeId, HttpServletResponse response, Model model){
+
+        Object requestingUserObj = model.getAttribute("user");
+        if(requestingUserObj == null || !(requestingUserObj instanceof User)){
+            // no valid requesting user
+            response.setStatus(401);
+            return "request must be from authenticated user";
+        }
+
+        User requestingUser = (User) requestingUserObj;
+
+        requestingUser.removeFavoriteRecipeById(recipeId);
+        userRepository.save(requestingUser);
+        response.setStatus(200);
+        return "recipe removed from favorites";
+    }
 }

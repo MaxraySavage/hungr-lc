@@ -19,10 +19,10 @@
         We couldn't find any of your recipes in the database. Maybe you could add one for us?
     </h2>
 </div>
-<div class="tabs" data-target="user-recipe-tabs">
+<div class="tabs" data-content-container="user-recipe-tabs">
     <ul>
         <li class="is-active">
-            <a data-target-tab="favorites-tab">
+            <a data-tab-content="favorites-tab">
                  <span class="icon is-small">
                     <i class="fas fa-heart" aria-hidden="true"></i>
                 </span>
@@ -30,7 +30,7 @@
             </a>
         </li>
         <li>
-            <a data-target-tab="their-recipes-tab">
+            <a data-tab-content="their-recipes-tab">
                 <span class="icon is-small">
                     <i class="fas fa-utensils"></i>
                 </span>
@@ -40,12 +40,12 @@
     </ul>
 </div>
 <div id="user-recipe-tabs">
-    <div class="container is-fluid target-tab" id="favorites-tab">
+    <div class="container is-fluid tab-content" id="favorites-tab">
         <th:block th:each="recipe : ${profileOwner.favoriteRecipes}">
             <div th:replace="fragments :: recipe-list-item(${recipe})"></div>
         </th:block>
     </div>
-    <div class="container is-fluid target-tab is-hidden" id="their-recipes-tab">
+    <div class="container is-fluid tab-content is-hidden" id="their-recipes-tab">
         <th:block th:each="recipe : ${profileOwner.ownedRecipes}">
             <div th:replace="fragments :: recipe-list-item(${recipe})"></div>
         </th:block>
