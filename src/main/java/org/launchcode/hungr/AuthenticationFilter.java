@@ -47,7 +47,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
             return true;
         }
 
-        // Don't require sign-in for whitelisted pages
+        // Don't require sign-in for allowlisted pages
         if (isAllowlisted(request.getRequestURI())) {
             // returning true indicates that the request may proceed
             return true;
