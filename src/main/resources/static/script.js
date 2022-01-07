@@ -17,18 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoriteBaseUrl = window.location.origin + '/users/favoriteRecipes/';
 
     // add event listeners to each favorite button
-    $favoriteRecipeButtons.forEach( el => {
+    $favoriteRecipeButtons.forEach( $favoriteButton => {
         // Get recipeId from targetRecipeId data field on button element
-        const targetRecipeId = el.dataset.targetRecipeId;
-        el.addEventListener('click', (event) => {
+        const targetRecipeId = $favoriteButton.dataset.targetRecipeId;
+        $favoriteButton.addEventListener('click', (event) => {
             event.preventDefault();
 
-            const $favoriteButtonText =  el.querySelector('.favorite-button-text');
-            if($favoriteButtonText.innerText !== 'Favorite' && $favoriteButtonText.innerText !== 'Unfavorite'){
-                return;
-            }
+            const $favoriteButtonText =  $favoriteButton.querySelector('.favorite-button-text');
 
-            fetchMethod = $favoriteButtonText.innerText === 'Favorite' ? 'POST' : 'DELETE';
+            const fetchMethod = $favoriteButton.dataset.isUserFavorite === 'true' ? 'DELETE' : 'POST';
 
             // Send HTTP POST request to favorite URL, credentials includes the session cookie
             fetch(favoriteBaseUrl + `?recipeId=${targetRecipeId}`, {
@@ -38,19 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((response) => {
                 return response.text()
             }).then( text => {
-                const $favoriteButtonIcon =  el.querySelector('.favorite-button-icon');
-                const $favoriteButtonCount = el.querySelector('.favorite-button-count');
+                const $favoriteButtonIcon =  $favoriteButton.querySelector('.favorite-button-icon');
+                const $favoriteButtonCount = $favoriteButton.querySelector('.favorite-button-count');
 
                 // database response is of the form 'favorited recipe successfully' or 'unfavorited recipe successfully'
                 // use response to switch button state as appropriate
                 if(fetchMethod === 'POST'){
+                    $favoriteButton.dataset.isUserFavorite = 'true';
+                    $favoriteButton.classList.add('is-danger');
                     $favoriteButtonText.innerText = `Unfavorite`;
-                    el.classList.add('is-danger');
                     $favoriteButtonIcon.classList.remove('has-text-danger');
                     $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) + 1;
                 } else if (fetchMethod === 'DELETE') {
+                    $favoriteButton.dataset.isUserFavorite = 'false';
+                    $favoriteButton.classList.remove('is-danger');
                     $favoriteButtonText.innerText = `Favorite`;
-                    el.classList.remove('is-danger');
                     $favoriteButtonIcon.classList.add('has-text-danger');
                     $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) - 1;
                 }
@@ -220,8 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const $tabsContainers = document.querySelectorAll('.tabs');
 
   if($tabsContainers.length > 0) {
-        $tabsContainers.forEach( el => {
-            const contentContainerId = el.dataset.contentContainer;
+        $tabsContainers.forEach( tabsContainer => {
+            const contentContainerId = tabsContainer.dataset.contentContainer;
             const $contentContainer = document.getElementById(contentContainerId);
             const $tabContentNodes = $contentContainer.querySelectorAll('.tab-content');
             
@@ -236,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
               });
             }
 
-            const $tabArray = el.querySelectorAll('a[data-tab-content]');
+            const $tabArray = tabsContainer.querySelectorAll('a[data-tab-content]');
 
             const setActiveTab = (tabToActivate) => {
               $tabArray.forEach( tab => {
