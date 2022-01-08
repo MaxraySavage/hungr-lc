@@ -12,7 +12,7 @@ public enum Icon {
     DRUMSTICK("fas fa-drumstick-bite", "Drumstick"),
     CHEESE("fas fa-cheese", "Cheese"),
     BREAD("fas fa-bread-slice", "Bread"),
-    COOKIE("fass fa-cookie", "Cookie"),
+    COOKIE("fas fa-cookie-bite", "Cookie"),
     HOTPEPPER("fas fa-pepper-hot", "Hot Pepper"),
     WAFFLE("fas fa-stroopwafel", "Waffle"),
     LEMON("fas fa-lemon", "Lemon"),
