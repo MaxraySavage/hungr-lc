@@ -6,57 +6,75 @@ Hungr is deployed on Heroku [https://hungr-dev.herokuapp.com/](https://hungr-dev
 ## Goals
 Create a way for people to easily save, share and try out new recipes without having to read a novel and fight through a bunch of popup advertisements.
 
-## Progress
-- [x] Brainstorm and build mock frontend
-- [x] Build minimum viable product
-- [x] Choose and complete first refinement (I chose to add ingredients)
-- [x] Implement ingredients
-- [x] Implement recipe steps
-- [x] Implement user model
-- [x] Build authentication and authorization
-- [x] Add user profile pages
-- [x] Give each user a favorite recipe list
-- [x] Implement search
-- [ ] Add more features
+## Technologies Used
+Hungr is built with the following technologies:
+* Java
+* Spring Boot
+* Hibernate
+* MySQL
+* Bulma
+* HTML
+* Thymeleaf
+* CSS
+* Javascript
 
-### Brainstorm front end
-Spending some time thinking about how I want things to work eventually will help me to get my database design done well the first time.
+### Why these technologies?
+I chose to use the Spring Boot, ThymeLeaf, MySQL set of technologies because I thought of this project as a capstone of sorts with the LaunchCode bootcamp curriculum.
 
-### Minimum Viable Product
-At absolute minimum I need to be able to perform CRUD operations on Recipes.
-In order to get this done quickly, I created a simplified recipe object that simply consists of a name and short description.
-From there I built the controller, data repository and thymeleaf templates and tested them manually.
+However, instead of using bootstrap, I chose to use Bulma because I liked how it looks and because Bulma includes no Javascript.
+I learned a lot by writing the javascript to make all my forms and other components work as I wanted them to.
 
-### Refinements
-A recipe is more than just a name and a description. After the Minimum Viable Product was created, I came up with the following list of possible refinements. 
+Bulma did have serious downsides and I don't think I would use it again. 
+#### Bulma does not meet important accessibility criteria
+Bulma doesn't meet contrast guidelines and a lot of the suggested ways of using Bulma's components in the docs are decidedly *un*-semantic.
+I regret not realizing the extent of these issues until late in development.
 
-* **Steps**
-    * Recipes are broken up into steps. 
-    * A recipe has a **One to Many** relationship with its steps. 
-    * A step may need an index number (which number step is it?) and definitely needs text. 
-    * In the future a step may have a time estimate or a picture associated with it.
-* **Ingredients**
-    * Maintaining a list of ingredients will allow users to search by what they have around the house and also build shopping lists more easily. 
-    * Ingredients could have a **Many to Many** relationship with recipes. 
-    * Are ingredients user created? This raises the possibility of misspelled ingredients etc. but solving for that could be challenging so we will start with allowing users to add ingredients. 
-    * I actually decided not have a shared repository of ingredients between recipes for now. For now an ingredient exists in **Many to one** relationship with recipes and works exactly the same as recipe steps in the database. So an ingredient is something like "2 onions, chopped" and not "Onions" with some other field keeping track of preparation or amount
-* **Time Estimates**
-    * Recipes typically include an estimate of preparation time and active time
-    * As each recipe only has one time estimate, I believe this would be best implemented as an added field on the Recipe object
-    * Including time estimates for each recipe step could also be implemented
-* **Tags/Type/Categories**
-    * Recipes can be divided into types like *breakfast* or *side dish* or *one pot*. So we have to think, is this a **One to Many** relationship where a recipe can only have one type or category? Or can a recipe sometimes have more than one? 
-    * If category and tags are really two different things then we should have both categories and tags.
-    * Start off with a **Many to Many** tag for recipes. Then we can implement functionality to filter or search by tag. 
-* **Users and Authentication**
-    * This app becomes much more useful and fun once users are implemented.
-    * A user should at least have a username and a password hash.
-    * Once user authentication is implemented we'll have to think about what parts of the site are usable without authentication and how we should structure navigation.
-* **Comments**
-    * With Users added to the app, we may wish to add a comment section to each recipe so people can share their opinions about certain recipes 
-    * A recipe has a **One to Many** relationship with its comments
-    * A recipe comment has a **One to One** relationship with its author
-* **Favorites**
-    * Each user should be able to favorite a recipe and see a list of all their favorite recipes
-#### Credits
-fork icon from Freepik www.flaticon.com
+## How it was built
+1. I initially mocked up how I wanted the app to look using Bulma and basic HTML. This helped me get a sense of how the project might look and what functionality I would need.
+2. I decided on a small set of initial features so that I could get a working project up and running quickly. I also defined a recipe as only a title and description at first.
+   1. Create a recipe
+   2. Look at a recipe
+   3. Edit a recipe
+   4. Delete a recipe
+3. I expanded recipe objects to include an Ingredient list.
+4. Recipes were again expanded to include a list of steps.
+5. I added User objects, authentication and authorization.
+6. I restricted Delete and Edit Recipe actions to only users who owned the recipe in question
+7. Search
+8. Favorite Recipes
+9. User Profiles
+
+
+## Features
+* User Registration
+  * Users can create a new account with a username and password
+* User Login
+  * Users can login with a valid username and password.
+  * Valid login results in a session being created on the server and cookie being stored on the client.
+* User Logout
+  * Users can logout, invalidating their session and removing their session cookie from local storage.
+* Recipe Creation
+  * Users can create new recipes consisting of a recipe name, description, ingredients and steps.
+* Recipe Edit
+  * Users can edit a recipe that they created. 
+  * Users may not edit recipes created by other users.
+* Recipe Delete
+  * Users can delete a recipe that they created.
+  * Users may not delete recipes created by other users.
+* Recipe View
+  * Users can view a recipe details page that shows all recipe information including how many users have added that recipe to their favorites.
+* Search Recipes
+  * Users can search the recipe database to find recipes.
+* Favorite Recipes
+  * Users can add a recipe to their favorites.
+* User Profile
+  * Users can view a list of all the recipes they have created as well as all the recipes they have favorited.
+  
+## Next Steps
+* Recipe image upload
+* Accessibility Audit
+* Add a random recipe display on the landing page
+* Follow other users
+* Recipe estimated prep time
+## Credits
+Fork icon from Freepik www.flaticon.com
