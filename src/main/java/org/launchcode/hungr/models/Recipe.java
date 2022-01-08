@@ -19,6 +19,9 @@ public class Recipe extends AbstractEntity{
     @Size(max=240, message="Description must be less than 240 characters")
     private String shortDescription;
 
+    @Enumerated(EnumType.STRING)
+    private Icon icon;
+
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private final List<Ingredient> ingredients = new ArrayList<>();
@@ -54,6 +57,14 @@ public class Recipe extends AbstractEntity{
 
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
 
     public List<Ingredient> getIngredients() {

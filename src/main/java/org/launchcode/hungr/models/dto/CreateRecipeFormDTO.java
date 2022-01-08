@@ -1,5 +1,6 @@
 package org.launchcode.hungr.models.dto;
 
+import org.launchcode.hungr.models.Icon;
 import org.launchcode.hungr.models.Ingredient;
 import org.launchcode.hungr.models.Recipe;
 import org.launchcode.hungr.models.RecipeStep;
@@ -17,10 +18,11 @@ public class CreateRecipeFormDTO {
     @Size(max=100, message="Name must be less than 100 characters")
     private String name;
 
-
     @NotBlank(message="Description must not be blank")
     @Size(max=240, message="Description must be less than 240 characters")
     private String shortDescription;
+
+    private Icon icon;
 
     private List<String> ingredients = new ArrayList<>();
 
@@ -36,6 +38,7 @@ public class CreateRecipeFormDTO {
     public void mapFieldsFromRecipe(Recipe recipe) {
         this.name = recipe.getName();
         this.shortDescription = recipe.getShortDescription();
+        this.icon = recipe.getIcon();
         this.ingredients.clear();
         for(Ingredient ingredient : recipe.getIngredients()) {
             this.ingredients.add(ingredient.getName());
@@ -60,6 +63,14 @@ public class CreateRecipeFormDTO {
 
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
 
     public List<String> getIngredients() {

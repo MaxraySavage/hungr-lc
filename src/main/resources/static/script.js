@@ -260,5 +260,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
   }
 
+  // Icon select display element
+
+  const $recipeIconSelectElements = document.querySelectorAll('.recipe-icon-select-input');
+
+  if($recipeIconSelectElements.length > 0){
+    $recipeIconSelectElements.forEach(($iconSelectElement) => {
+        $iconSelectElement.addEventListener('change', (event) => {
+            const $iconDisplay = document.getElementById($iconSelectElement.dataset.target);
+            $iconDisplay.className = $iconSelectElement.selectedOptions[0].dataset.iconClass;
+        });
+
+    });
+
+  }
+
 
 });

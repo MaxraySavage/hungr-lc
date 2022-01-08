@@ -41,6 +41,7 @@
             </div>
             <p class="help is-danger" th:errors="${createRecipeFormDTO.shortDescription}"></p>
         </div>
+        <div th:replace="recipes/fragments :: create-recipe-icon-selector"></div>
     </div>
 
     <div class="container">

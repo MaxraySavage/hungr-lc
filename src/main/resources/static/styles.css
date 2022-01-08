@@ -6,3 +6,19 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.recipe-icon-container{
+
+}
+
+.recipe-list-icon{
+    height: 100%;
+    width: 100%;
+    font-size: 50px;
+}
+
+.recipe-display-icon{
+    height: 100%;
+    width: 100%;
+    font-size: 100px;
+}

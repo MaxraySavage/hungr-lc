@@ -83,6 +83,7 @@ public class RecipesController {
         // TODO: this next line may need work? feels weird to do an inline cast like this
         // Make a method that does this?
         newRecipe.setAuthor((User) model.getAttribute("user"));
+        newRecipe.setIcon(createRecipeFormDTO.getIcon());
         Recipe savedRecipe = recipeRepository.save(newRecipe);
         for( String ingredientName : createRecipeFormDTO.getIngredients()) {
             Ingredient newIngredient = new Ingredient(ingredientName);
@@ -144,7 +145,7 @@ public class RecipesController {
 
         originalRecipe.setName(editRecipeFormDTO.getName());
         originalRecipe.setShortDescription(editRecipeFormDTO.getShortDescription());
-
+        originalRecipe.setIcon(editRecipeFormDTO.getIcon());
         originalRecipe.getIngredients().clear();
         originalRecipe.getSteps().clear();
         Recipe savedRecipe = recipeRepository.save(originalRecipe);
