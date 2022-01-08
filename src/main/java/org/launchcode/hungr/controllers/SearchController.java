@@ -21,14 +21,14 @@ public class SearchController {
     @GetMapping
     public String getSearchHome(Model model, @RequestParam(required = false) String q){
         Iterable<Recipe> recipes;
+        String title = "Search for: \"" + q + "\"";
         if(q == null){
             recipes = recipeRepository.findAll();
         } else {
             recipes = recipeRepository.findByNameContainingIgnoreCase(q);
         }
-        String title = "Search for: \"" + q + "\"";
 
-        model.addAttribute("title", "Search for " + q);
+        model.addAttribute("title", title);
         model.addAttribute("subtitle", "Don't see what you're looking for?");
         model.addAttribute("recipes", recipes);
         return "recipes/index";
