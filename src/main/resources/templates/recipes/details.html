@@ -6,9 +6,9 @@
 
 <div class="container">
     <section class="section box">
-            <div class="columns">
+            <div class="columns is-mobile">
                 <div class="column is-narrow">
-                    <figure class="image is-128x128">
+                    <figure class="image is-128x128" th:replace="recipes/fragments :: recipe-display-icon(${recipe.getIcon()})">
                         <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
                     </figure>
                 </div>

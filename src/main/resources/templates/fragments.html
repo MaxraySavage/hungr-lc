@@ -86,7 +86,7 @@
             <article class="media">
                 <div class="media-left">
                     <div class="block">
-                        <figure class="image is-64x64">
+                        <figure class="image is-64x64" th:replace="fragments :: recipe-list-icon(${recipe.icon})">
                             <img class="is-rounded" src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
                         </figure>
                     </div>
@@ -128,6 +128,15 @@
             <i class="fas fa-heart"></i>
         </span>
     </button>
+</th:block>
+
+<th:block th:fragment="recipe-list-icon(icon)">
+    <figure class="image is-64x64 has-background-primary-light">
+        <span class="icon recipe-list-icon has-text-primary-dark">
+            <i th:unless="${icon}" class="fas fa-utensils" ></i>
+            <i th:if="${icon}" th:class="${icon.getFontAwesomeClass}"></i>
+        </span>
+    </figure>
 </th:block>
 
 

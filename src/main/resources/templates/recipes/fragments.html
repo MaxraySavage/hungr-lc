@@ -71,6 +71,54 @@
     </div>
 </th:block>
 
+<th:block th:fragment="create-recipe-icon-selector">
+    <div class="field">
+        <label class="label">Recipe Icon</label>
+        <p class="content">Pick an icon to represent your recipe!</p>
+        <div class="control has-icons-left">
+            <div class="select">
+                <select class="recipe-icon-select-input" data-target="icon-display" th:field=${createRecipeFormDTO.icon}>
+                    <option th:each="icon : ${T(org.launchcode.hungr.models.Icon).values()}"
+                            th:value="${icon}" th:text="${icon.displayName}" th:data-icon-class="${icon.fontAwesomeClass}"></option>
+                </select>
+            </div>
+            <div class="icon is-small is-left">
+                <i id="icon-display" th:class="${createRecipeFormDTO.icon} ? ${createRecipeFormDTO.icon.fontAwesomeClass} : 'fas fa-pizza-slice'"></i>
+            </div>
+            <p class="help is-danger" th:errors="${createRecipeFormDTO.icon}"></p>
+        </div>
+
+    </div>
+</th:block>
+
+<th:block th:fragment="edit-recipe-icon-selector">
+    <div class="field">
+        <label class="label">Recipe Icon</label>
+        <p class="content">Pick an icon to represent your recipe!</p>
+        <div class="control has-icons-left">
+            <div class="select">
+                <select class="recipe-icon-select-input" data-target="icon-display" th:field=${editRecipeFormDTO.icon}>
+                    <option th:each="icon : ${T(org.launchcode.hungr.models.Icon).values()}"
+                            th:value="${icon}" th:text="${icon.displayName}" th:data-icon-class="${icon.fontAwesomeClass}"></option>
+                </select>
+            </div>
+            <div class="icon is-small is-left">
+                <i id="icon-display" th:class="${editRecipeFormDTO.icon} ? ${editRecipeFormDTO.icon.fontAwesomeClass} : 'fas fa-pizza-slice'"></i>
+            </div>
+            <p class="help is-danger" th:errors="${editRecipeFormDTO.icon}"></p>
+        </div>
+
+    </div>
+</th:block>
+
+<th:block th:fragment="recipe-display-icon(icon)">
+    <figure class="image is-128x128 has-background-primary-light">
+        <span class="icon recipe-display-icon has-text-primary-dark">
+            <i th:unless="${icon}" class="fas fa-utensils" ></i>
+            <i th:if="${icon}" th:class="${icon.getFontAwesomeClass}"></i>
+        </span>
+    </figure>
+</th:block>
 
 </body>
 </html>
