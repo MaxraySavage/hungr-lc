@@ -6,14 +6,12 @@ import javax.validation.constraints.Size;
 
 public class LoginFormDTO {
 
-    @NotNull
-    @NotBlank
-    @Size(min = 3, max = 20, message = "Invalid username. Must be between 3 and 20 characters.")
+    @NotBlank(message="Username must not blank")
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters.")
     private String username;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 5, max = 30, message = "Invalid password. Must be between 5 and 30 characters.")
+    @NotBlank(message="Password must not be blank")
+    @Size(min = 5, max = 30, message = "Password must be between 5 and 30 characters.")
     private String password;
 
     public String getUsername() {
