@@ -118,7 +118,7 @@
 
 <th:block th:fragment="favorite-button(recipe, isUserFavorite)">
     <button type="button" class="button is-small is-rounded favorite-button" th:classappend="${isUserFavorite ? 'is-danger' : ''}"
-            th:data-target-recipe-id="${recipe.id}">
+            th:data-target-recipe-id="${recipe.id}" th:data-is-user-favorite="${isUserFavorite}">
 
         <span class="favorite-button-text is-hidden" th:text="${isUserFavorite ? 'Unfavorite' : 'Favorite'}">
             Favorite
