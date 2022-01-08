@@ -4,6 +4,7 @@ import org.launchcode.hungr.controllers.AuthenticationController;
 import org.launchcode.hungr.data.UserRepository;
 import org.launchcode.hungr.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +14,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class AuthenticationFilter extends HandlerInterceptorAdapter {
+public class AuthenticationFilter implements HandlerInterceptor {
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     AuthenticationController authenticationController;
+
 
     private static final List<String> allowlist = Arrays.asList("/login", "/signup", "/logout","/css", "/images", "/fontawesome", "/script", "/webfonts");
 
@@ -42,7 +44,7 @@ public class AuthenticationFilter extends HandlerInterceptorAdapter {
 
         // The user is logged in
         if (user != null) {
-            // add user attribute to request so we only need one database lookup for the user per request
+            // add user attribute to request object so we only need one database lookup for the user per request
             request.setAttribute("user", user);
             return true;
         }
