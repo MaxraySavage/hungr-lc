@@ -1,11 +1,3 @@
-  // As this js script will be loaded on every page (as of now) the code follows a certain pattern
-  // After the page is loaded,
-  // we query the document to see if there are any HTML elements that match a certain selector
-  // usually a class
-  // then if any of those elements are found, we add an event listener to each element we found
-  // that creates the desired behavior
-  // I've used a naming convention where a variable beginning with $ represents a dom element or an array of dom elements
-
 document.addEventListener('DOMContentLoaded', () => {
   const parser = new DOMParser();
 
