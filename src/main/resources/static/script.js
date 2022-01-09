@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const resetPanelBlockInputIndexing = (panelBlockContainer) => {
-    $panelInputs = Array.from(panelBlockContainer.querySelectorAll('input[type="checkbox"]'));
+    $panelInputs = panelBlockContainer.querySelectorAll('input[type="checkbox"]');
     $panelInputs.forEach( (el, index) => {
         // will produce weird behavior if el.name isn't exactly of the form 'text[index]'
         const nameArray = el.name.split('[');
