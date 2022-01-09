@@ -19,8 +19,7 @@ public class Ingredient extends AbstractEntity{
         this.name = name;
     }
 
-    public Ingredient() {
-    }
+    public Ingredient() {}
 
     public String getName() {
         return name;
