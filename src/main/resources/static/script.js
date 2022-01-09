@@ -12,40 +12,33 @@ document.addEventListener('DOMContentLoaded', () => {
     $favoriteRecipeButtons.forEach( $favoriteButton => {
         // Get recipeId from targetRecipeId data field on button element
         const targetRecipeId = $favoriteButton.dataset.targetRecipeId;
+        if (!targetRecipeId) { return; }
+        const $favoriteButtonIcon =  $favoriteButton.querySelector('.favorite-button-icon');
+        const $favoriteButtonCount = $favoriteButton.querySelector('.favorite-button-count');
+        const $favoriteButtonText =  $favoriteButton.querySelector('.favorite-button-text');
+
         $favoriteButton.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            const $favoriteButtonText =  $favoriteButton.querySelector('.favorite-button-text');
-
-            const fetchMethod = $favoriteButton.dataset.isUserFavorite === 'true' ? 'DELETE' : 'POST';
-
-            // Send HTTP POST request to favorite URL, credentials includes the session cookie
-            fetch(favoriteBaseUrl + `?recipeId=${targetRecipeId}`, {
-                method: fetchMethod,
-                credentials: 'include',
-            })
-            .then((response) => {
-                return response.text()
-            }).then( text => {
-                const $favoriteButtonIcon =  $favoriteButton.querySelector('.favorite-button-icon');
-                const $favoriteButtonCount = $favoriteButton.querySelector('.favorite-button-count');
-
-                // database response is of the form 'favorited recipe successfully' or 'unfavorited recipe successfully'
-                // use response to switch button state as appropriate
-                if(fetchMethod === 'POST'){
-                    $favoriteButton.dataset.isUserFavorite = 'true';
-                    $favoriteButton.classList.add('is-danger');
-                    $favoriteButtonText.innerText = `Unfavorite`;
-                    $favoriteButtonIcon.classList.remove('has-text-danger');
-                    $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) + 1;
-                } else if (fetchMethod === 'DELETE') {
-                    $favoriteButton.dataset.isUserFavorite = 'false';
-                    $favoriteButton.classList.remove('is-danger');
-                    $favoriteButtonText.innerText = `Favorite`;
-                    $favoriteButtonIcon.classList.add('has-text-danger');
-                    $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) - 1;
-                }
-            })
+          event.preventDefault();
+          const fetchMethod = $favoriteButton.dataset.isUserFavorite === 'true' ? 'DELETE' : 'POST';
+          fetch(favoriteBaseUrl + `?recipeId=${targetRecipeId}`, {
+              method: fetchMethod,
+              credentials: 'include',
+          })
+          .then(() => {
+              if(fetchMethod === 'POST'){
+                  $favoriteButton.dataset.isUserFavorite = 'true';
+                  $favoriteButton.classList.add('is-danger');
+                  $favoriteButtonText.innerText = `Unfavorite`;
+                  $favoriteButtonIcon.classList.remove('has-text-danger');
+                  $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) + 1;
+              } else if (fetchMethod === 'DELETE') {
+                  $favoriteButton.dataset.isUserFavorite = 'false';
+                  $favoriteButton.classList.remove('is-danger');
+                  $favoriteButtonText.innerText = `Favorite`;
+                  $favoriteButtonIcon.classList.add('has-text-danger');
+                  $favoriteButtonCount.innerText = parseInt($favoriteButtonCount.innerText, 10) - 1;
+              }
+          })
         })
     });
   }
