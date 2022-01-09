@@ -122,7 +122,7 @@ public class RecipesController {
     public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid EditRecipeFormDTO editRecipeFormDTO, Errors errors){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
-            // recipeId is not found in the database
+            // recipeId is not found in the database, therefore can't be edited
             return "redirect:/recipes";
         }
 
@@ -141,8 +141,7 @@ public class RecipesController {
             return "recipes/edit";
         }
 
-        // edit recipe requests meets requirements and is acted on
-
+        // edit recipe request meets requirements and is acted on
         originalRecipe.setName(editRecipeFormDTO.getName());
         originalRecipe.setShortDescription(editRecipeFormDTO.getShortDescription());
         originalRecipe.setIcon(editRecipeFormDTO.getIcon());
