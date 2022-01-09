@@ -1,7 +1,7 @@
 # Hungr - a recipe sharing platform
 Hungr is a web application for saving and sharing recipes between users.  It was built with Spring MVC, thymeleaf, Bulma, hibernate, and MySQL.
 
-Hungr is deployed on Heroku [https://hungr-dev.herokuapp.com/](https://hungr-dev.herokuapp.com/) however the deployed version may not mirror the current version here in the repo.
+Hungr is deployed on Heroku [https://hungr-dev.herokuapp.com/](https://hungr-dev.herokuapp.com/).
 
 ## Goals
 Create a way for people to easily save, share and try out new recipes without having to read a novel and fight through a bunch of popup advertisements.
