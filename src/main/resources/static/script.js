@@ -58,6 +58,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Icon select display element
+
+  const $recipeIconSelectElements = document.querySelectorAll('.recipe-icon-select-input');
+  if($recipeIconSelectElements.length > 0){
+    $recipeIconSelectElements.forEach(($iconSelectElement) => {
+        $iconSelectElement.addEventListener('change', () => {
+            const $iconDisplay = document.getElementById($iconSelectElement.dataset.target);
+            $iconDisplay.className = $iconSelectElement.selectedOptions[0].dataset.iconClass;
+        });
+    });
+  }
+
+  const $tabsContainers = document.querySelectorAll('.tabs');
+  if($tabsContainers.length > 0) {
+        $tabsContainers.forEach( tabsContainer => {
+            const contentContainerId = tabsContainer.dataset.contentContainer;
+            const $contentContainer = document.getElementById(contentContainerId);
+            const $tabContentNodes = $contentContainer.querySelectorAll('.tab-content');
+            const setActiveTabContent = (tabContentId) => {
+              $tabContentNodes.forEach( tabContent => {
+                  if(tabContent.id === tabContentId) {
+                      tabContent.classList.remove('is-hidden');
+                  } else {
+                      tabContent.classList.add('is-hidden');
+                  }
+              });
+            }
+
+            const $tabArray = tabsContainer.querySelectorAll('li[data-tab-content]');
+
+            const setActiveTab = (tabToActivate) => {
+              $tabArray.forEach( tab => {
+                if(tab.isSameNode(tabToActivate)) {
+                  const contentToActivateId = tab.dataset.tabContent;
+                  setActiveTabContent(contentToActivateId);
+                  tab.classList.add('is-active');
+                } else {
+                  tab.classList.remove('is-active');
+                }
+              })
+            }
+
+            $tabArray.forEach( tab => {
+                tab.addEventListener('click', event => {
+                    event.preventDefault();
+                    setActiveTab(tab);
+                });
+            });
+        });
+  }
+
   // From stackoverflow
   // https://stackoverflow.com/questions/41137114/im-trying-to-use-hamburger-menu-on-bulma-css-but-it-doesnt-work-what-is-wron
   // Get all "navbar-burger" elements
