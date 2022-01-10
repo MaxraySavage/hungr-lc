@@ -55,7 +55,7 @@ public class AuthenticationFilter implements HandlerInterceptor {
             return true;
         }
 
-        // The user is NOT logged in
+        // The user is NOT logged in and trying to access a page that requires login
         response.sendRedirect("/login");
         return false;
     }
