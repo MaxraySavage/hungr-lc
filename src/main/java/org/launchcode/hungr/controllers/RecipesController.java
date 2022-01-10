@@ -55,18 +55,19 @@ public class RecipesController {
     }
 
     @GetMapping("/details/{recipeId}")
-    public String displayRecipe(Model model, @PathVariable int recipeId){
+    public String displayRecipe(HttpServletRequest request, Model model, @PathVariable int recipeId){
         Optional<Recipe> optionRecipe = recipeRepository.findById(recipeId);
+
         if(optionRecipe.isEmpty()){
-            // TODO: Add a `recipe not found` page
             return "redirect:/recipes";
         }
         Recipe recipe = optionRecipe.get();
-        boolean userIsAuthor = recipe.getAuthor().equals(model.getAttribute("user"));
-        boolean recipeIsFavorite = ((User) model.getAttribute("user")).getFavoriteRecipes().contains(recipe);
+        User user = getUserFromRequest(request);
+        boolean userIsAuthor = recipe.getAuthor().equals(user);
+        boolean recipeIsFavorite = recipe.isUserFavorite(user);
 
         model.addAttribute("recipeIsFavorite", recipeIsFavorite);
-        model.addAttribute("userIsAuthor",userIsAuthor);
+        model.addAttribute("userIsAuthor", userIsAuthor);
         model.addAttribute("title", "Recipe Details");
         model.addAttribute("recipe", recipe);
         return "recipes/details";
@@ -80,15 +81,13 @@ public class RecipesController {
     }
 
     @PostMapping("create")
-    public String processCreateRecipeForm( Model model, @ModelAttribute @Valid CreateRecipeFormDTO createRecipeFormDTO, Errors errors){
+    public String processCreateRecipeForm( Model model, @ModelAttribute @Valid CreateRecipeFormDTO createRecipeFormDTO, Errors errors, HttpServletRequest request){
         if(errors.hasErrors()){
             model.addAttribute("title", "Add a Recipe");
             return "recipes/create";
         }
         Recipe newRecipe = new Recipe(createRecipeFormDTO.getName(), createRecipeFormDTO.getShortDescription());
-        // TODO: this next line may need work? feels weird to do an inline cast like this
-        // Make a method that does this?
-        newRecipe.setAuthor((User) model.getAttribute("user"));
+        newRecipe.setAuthor(getUserFromRequest(request));
         newRecipe.setIcon(createRecipeFormDTO.getIcon());
         Recipe savedRecipe = recipeRepository.save(newRecipe);
         for( String ingredientName : createRecipeFormDTO.getIngredients()) {
@@ -105,14 +104,14 @@ public class RecipesController {
     }
 
     @GetMapping("/edit/{recipeId}")
-    public String renderEditRecipeForm(Model model, @PathVariable int recipeId){
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, HttpServletRequest request){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
             // recipe not found in database
             return "redirect:/recipes";
         }
         Recipe recipe = optionalRecipe.get();
-        boolean userIsAuthor = recipe.getAuthor().equals(model.getAttribute("user"));
+        boolean userIsAuthor = recipe.getAuthor().equals(getUserFromRequest(request));
         if(! userIsAuthor) {
             return "redirect:/recipes";
         }
@@ -125,7 +124,7 @@ public class RecipesController {
     }
 
     @PostMapping("/edit/{recipeId}")
-    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid EditRecipeFormDTO editRecipeFormDTO, Errors errors){
+    public String renderEditRecipeForm(Model model, @PathVariable int recipeId, @ModelAttribute @Valid EditRecipeFormDTO editRecipeFormDTO, Errors errors, HttpServletRequest request){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()) {
             // recipeId is not found in the database, therefore can't be edited
@@ -133,10 +132,15 @@ public class RecipesController {
         }
 
         Recipe originalRecipe = optionalRecipe.get();
-        boolean userIsAuthor = originalRecipe.getAuthor().equals(model.getAttribute("user"));
+        boolean userIsAuthor = originalRecipe.getAuthor().equals(getUserFromRequest(request));
 
-        if(! userIsAuthor) {
+        if(!userIsAuthor) {
             // the user trying to edit the recipe is not the author, they shouldn't be allowed to edit it
+            return "redirect:/recipes";
+        }
+
+        if(editRecipeFormDTO.getId() != recipeId) {
+            // somehow the DTO is for a different recipe than this endpoint
             return "redirect:/recipes";
         }
 
@@ -148,9 +152,7 @@ public class RecipesController {
         }
 
         // edit recipe request meets requirements and is acted on
-        originalRecipe.setName(editRecipeFormDTO.getName());
-        originalRecipe.setShortDescription(editRecipeFormDTO.getShortDescription());
-        originalRecipe.setIcon(editRecipeFormDTO.getIcon());
+        editRecipeFormDTO.mapFieldsOntoRecipe(originalRecipe);
         originalRecipe.getIngredients().clear();
         originalRecipe.getSteps().clear();
         Recipe savedRecipe = recipeRepository.save(originalRecipe);
@@ -164,12 +166,11 @@ public class RecipesController {
             newStep.setRecipe(originalRecipe);
             recipeStepRepository.save(newStep);
         }
-
         return "redirect:/recipes/details/" + originalRecipe.getId();
     }
 
     @PostMapping("delete")
-    public String processDeleteRecipe(@RequestParam Integer recipeId, Model model){
+    public String processDeleteRecipe(@RequestParam Integer recipeId, Model model, HttpServletRequest request){
         Optional<Recipe> optionalRecipe = recipeRepository.findById(recipeId);
         if(optionalRecipe.isEmpty()){
             // delete request for an id that is not in the database
@@ -177,7 +178,7 @@ public class RecipesController {
         }
         Recipe recipeToDelete = optionalRecipe.get();
 
-        boolean userIsAuthor = recipeToDelete.getAuthor().equals(model.getAttribute("user"));
+        boolean userIsAuthor = recipeToDelete.getAuthor().equals(getUserFromRequest(request));
         if(! userIsAuthor){
             // requesting user doesn't own the recipe and shouldn't be allowed to delete it
             return "redirect:/recipes";
