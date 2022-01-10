@@ -33,11 +33,17 @@ public class RecipesController {
     private RecipeStepRepository recipeStepRepository;
 
     @ModelAttribute
-    public void addUserAttributeToModel(Model model, HttpServletRequest request) {
-        Object userObj = request.getAttribute("user");
-        if(userObj != null && userObj instanceof User){
-            model.addAttribute("user", userObj);
+    public void setUserInModel(Model model, HttpServletRequest request) {
+        User user = getUserFromRequest(request);
+        model.addAttribute("user", user);
+    }
+
+    private User getUserFromRequest(HttpServletRequest request) {
+        Object userObject = request.getAttribute("user");
+        if(userObject != null && userObject instanceof User){
+            return (User) userObject;
         }
+        return null;
     }
 
     @GetMapping
