@@ -29,4 +29,11 @@ public class EditRecipeFormDTO extends CreateRecipeFormDTO{
         this.id = id;
     }
 
+    public Recipe mapFieldsOntoRecipe(Recipe recipe) {
+        recipe.setName(getName());
+        recipe.setShortDescription(getShortDescription());
+        recipe.setIcon(getIcon());
+        return recipe;
+    }
+
 }
